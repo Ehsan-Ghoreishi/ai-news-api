@@ -2,10 +2,12 @@
 
 from datetime import datetime
 
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, ConfigDict, HttpUrl
 
 
 class NewsItem(BaseModel):
+    model_config = ConfigDict(from_attributes=True)  # lets this validate directly from ORM objects
+
     id: int | None  # database primary key; None before the row is inserted
     source: str  # name of the scraper/site this came from, e.g. "techcrunch"
     source_id: str  # the article's id/slug on the source site, for dedup

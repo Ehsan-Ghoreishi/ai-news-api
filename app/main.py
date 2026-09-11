@@ -1,5 +1,8 @@
-def main():
-    print("Hello, AI Engineer!")
+from fastapi import FastAPI
 
-if __name__ == "__main__":
-    main()
+from app.api.routes import health, news
+
+app = FastAPI(title="AI News API")
+
+app.include_router(health.router)
+app.include_router(news.router)

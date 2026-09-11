@@ -1,20 +1,20 @@
 """Ingestion workflow."""
 
-from pathlib import Path
-
+from app.database.connection import SessionLocal
+from app.database.repository import insert_news_item
 from app.scrapers.hackernews import scrape_top_stories
-
-RAW_DIR = Path("data/raw")
 
 
 def run_ingestion() -> None:
-    """Scrape news items and save each one as its own JSON file in data/raw/."""
-    RAW_DIR.mkdir(parents=True, exist_ok=True)
-
+    """Scrape news items and store each one in the database, skipping duplicates."""
     items = scrape_top_stories()
-    for item in items:
-        path = RAW_DIR / f"{item.source}_{item.source_id}.json"
-        path.write_text(item.model_dump_json(indent=2))
+
+    db = SessionLocal()
+    try:
+        for item in items:
+            insert_news_item(db, item)
+    finally:
+        db.close()
 
 
 if __name__ == "__main__":
