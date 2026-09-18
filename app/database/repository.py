@@ -4,8 +4,8 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
-from app.database.models import NewsItemModel
-from app.schemas.news import ArticleEnrichment, NewsItem
+from app.database.models import NewsChunkModel, NewsItemModel
+from app.schemas.news import ArticleEnrichment, NewsItem, SearchResult
 
 
 def _to_news_item(model: NewsItemModel) -> NewsItem:
@@ -61,3 +61,63 @@ def get_news_item(db: Session, item_id: int) -> NewsItem | None:
     """Fetch a single news item by primary key."""
     model = db.get(NewsItemModel, item_id)
     return _to_news_item(model) if model else None
+
+
+def get_unindexed_news_items(db: Session) -> list[NewsItem]:
+    """Return items that have content but have not been chunked/embedded yet."""
+    chunked_ids = select(NewsChunkModel.news_item_id).distinct()
+    models = db.scalars(
+        select(NewsItemModel).where(
+            NewsItemModel.content.is_not(None),
+            NewsItemModel.id.not_in(chunked_ids),
+        )
+    ).all()
+    return [_to_news_item(m) for m in models]
+
+
+def insert_news_chunks(
+    db: Session, news_item_id: int, chunks: list[str], embeddings: list[list[float]]
+) -> None:
+    """Insert embedded chunks for a news item; skip a chunk if its index already exists."""
+    values = [
+        {
+            "news_item_id": news_item_id,
+            "chunk_index": index,
+            "content": content,
+            "embedding": embedding,
+        }
+        for index, (content, embedding) in enumerate(zip(chunks, embeddings))
+    ]
+    stmt = insert(NewsChunkModel).values(values).on_conflict_do_nothing(
+        index_elements=["news_item_id", "chunk_index"]
+    )
+    db.execute(stmt)
+    db.commit()
+
+
+def search_similar_chunks(db: Session, embedding: list[float], limit: int = 5) -> list[SearchResult]:
+    """Find the chunks whose embedding is most similar (max inner product) to the query embedding."""
+    # <#> is negative inner product distance (pgvector); smaller = more similar, so we negate it back into a similarity score.
+    distance = NewsChunkModel.embedding.max_inner_product(embedding)
+    rows = db.execute(
+        select(
+            NewsItemModel.id,
+            NewsItemModel.title,
+            NewsItemModel.url,
+            NewsChunkModel.content,
+            distance.label("distance"),
+        )
+        .join(NewsItemModel, NewsChunkModel.news_item_id == NewsItemModel.id)
+        .order_by(distance)
+        .limit(limit)
+    ).all()
+    return [
+        SearchResult(
+            news_item_id=row.id,
+            title=row.title,
+            url=row.url,
+            chunk_content=row.content,
+            similarity=-row.distance,
+        )
+        for row in rows
+    ]

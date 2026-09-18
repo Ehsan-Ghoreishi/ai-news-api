@@ -23,3 +23,11 @@ class NewsItem(BaseModel):
 class ArticleEnrichment(BaseModel):
     summary: str  # LLM-generated summary text
     tags: list[str]  # LLM-generated topic tags
+
+
+class SearchResult(BaseModel):
+    news_item_id: int  # id of the article this chunk belongs to
+    title: str  # article headline
+    url: HttpUrl  # link to the original article
+    chunk_content: str  # the matched chunk's text
+    similarity: float  # similarity score of the chunk to the query
