@@ -3,6 +3,7 @@
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 
 import requests
@@ -10,6 +11,26 @@ import requests
 from week6.evaluations.scoring import score_answer
 
 QUESTIONS_PATH = Path(__file__).parent / "questions.json"
+
+# /ask/ is rate limited (see app/api/rate_limit.py). With enough questions, a
+# straight-through run legitimately trips it - back off and retry rather than
+# failing the whole evaluation over a 429.
+RATE_LIMIT_RETRY_SECONDS = 61
+MAX_RATE_LIMIT_RETRIES = 3
+
+
+def _ask(base_url: str, question: str) -> dict:
+    """POST to /ask/, retrying once per minute if we're rate limited."""
+    for attempt in range(MAX_RATE_LIMIT_RETRIES + 1):
+        response = requests.post(f"{base_url}/ask/", json={"question": question, "limit": 5})
+        if response.status_code != 429:
+            response.raise_for_status()
+            return response.json()
+        if attempt == MAX_RATE_LIMIT_RETRIES:
+            response.raise_for_status()
+        print(f"  rate limited, waiting {RATE_LIMIT_RETRY_SECONDS}s before retrying...")
+        time.sleep(RATE_LIMIT_RETRY_SECONDS)
+    raise AssertionError("unreachable")
 
 
 def evaluate(base_url: str) -> list[dict]:
@@ -24,12 +45,7 @@ def evaluate(base_url: str) -> list[dict]:
 
     results = []
     for question in questions:
-        response = requests.post(
-            f"{base_url}/ask/",
-            json={"question": question["question"], "limit": 5},
-        )
-        response.raise_for_status()
-        payload = response.json()
+        payload = _ask(base_url, question["question"])
 
         if not question.get("expect_supported", True):
             retrieval_ok = None

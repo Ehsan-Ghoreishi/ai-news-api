@@ -1,8 +1,9 @@
 import io
 import unittest
 from contextlib import redirect_stdout
+from unittest.mock import MagicMock, patch
 
-from week6.evaluations.run_evaluation import report
+from week6.evaluations.run_evaluation import _ask, report
 
 
 class TestReport(unittest.TestCase):
@@ -27,6 +28,36 @@ class TestReport(unittest.TestCase):
             report(results)
         self.assertIn("Retrieval accuracy: 1/1 (100.0%)", output.getvalue())
         self.assertIn("n/a", output.getvalue())
+
+
+class TestAsk(unittest.TestCase):
+    @patch("week6.evaluations.run_evaluation.time.sleep")
+    @patch("week6.evaluations.run_evaluation.requests.post")
+    def test_retries_after_rate_limit(self, mock_post, mock_sleep):
+        rate_limited = MagicMock(status_code=429)
+        ok = MagicMock(status_code=200)
+        ok.json.return_value = {"answer": "42", "supported": True, "citations": []}
+        mock_post.side_effect = [rate_limited, ok]
+
+        result = _ask("http://testserver", "some question")
+
+        self.assertEqual(result["answer"], "42")
+        mock_sleep.assert_called_once_with(61)
+        self.assertEqual(mock_post.call_count, 2)
+
+    @patch("week6.evaluations.run_evaluation.time.sleep")
+    @patch("week6.evaluations.run_evaluation.requests.post")
+    def test_gives_up_after_max_retries(self, mock_post, mock_sleep):
+        import requests
+
+        rate_limited = MagicMock(status_code=429)
+        rate_limited.raise_for_status.side_effect = requests.exceptions.HTTPError("429")
+        mock_post.return_value = rate_limited
+
+        with self.assertRaises(requests.exceptions.HTTPError):
+            _ask("http://testserver", "some question")
+
+        self.assertEqual(mock_post.call_count, 4)  # initial attempt + 3 retries
 
 
 if __name__ == "__main__":

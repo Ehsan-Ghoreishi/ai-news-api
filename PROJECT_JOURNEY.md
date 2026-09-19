@@ -161,6 +161,18 @@ requirement - it needs a real database and spends real API credits per run,
 so it stays opt-in behind repo secrets rather than gating every push on
 production infrastructure being reachable.
 
+**Adding the rate limit broke the evaluation harness.** This surfaced
+immediately when re-running `run_evaluation.py` one final time after all the
+above changes: with 30 questions hitting `/ask/` back-to-back and no
+authentication distinguishing the harness from any other caller, it tripped
+its own 10-requests/minute limit partway through and failed with a 429. The
+harness now backs off and retries after a rate-limit response instead of
+treating it as fatal (`week6/evaluations/run_evaluation.py`), the same way
+any well-behaved client hitting a public rate-limited API should. It's a
+small thing, but it's a real example of two independently-reasonable
+changes (protect a costly endpoint; write a thorough eval) interacting in a
+way neither one alone would have caught.
+
 ## What's still rough
 
 - The evaluation corpus is small. Production has 9 indexed articles, but 1
