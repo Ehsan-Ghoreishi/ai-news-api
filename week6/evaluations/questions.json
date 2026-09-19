@@ -14,6 +14,28 @@
     "source_id": "49753878"
   },
   {
+    "id": "harness_models_count",
+    "question": "How many different models were evaluated in the empirical study of coding-agent harness design?",
+    "answer_type": "number",
+    "expected_answer": "4",
+    "source_id": "49753878"
+  },
+  {
+    "id": "harness_benchmarks",
+    "question": "Which two benchmarks were used to evaluate the models in the coding-agent harness study?",
+    "answer_type": "text",
+    "expected_answer": "SWE-Bench Verified and Terminal-Bench 2.1",
+    "accepted_answers": ["SWE-Bench Verified, Terminal-Bench 2.1", "SWE-bench Verified and Terminal-Bench 2.1"],
+    "source_id": "49753878"
+  },
+  {
+    "id": "harness_context_strategies_count",
+    "question": "How many context-management strategies were compared in the harness study?",
+    "answer_type": "number",
+    "expected_answer": "5",
+    "source_id": "49753878"
+  },
+  {
     "id": "conway_conjecture_age",
     "question": "According to the article, how many years ago did John Conway pose the refinement conjecture that the author eventually got proved?",
     "answer_type": "number",
@@ -26,6 +48,22 @@
     "answer_type": "text",
     "expected_answer": "over 95%",
     "accepted_answers": ["95%", "more than 95%", "over 95 percent"],
+    "source_id": "49755024"
+  },
+  {
+    "id": "conway_ai_models_used",
+    "question": "Which two AI assistants does the author mention using over the course of the month-long project to prove the conjecture?",
+    "answer_type": "text",
+    "expected_answer": "ChatGPT and Claude",
+    "accepted_answers": ["Claude and ChatGPT"],
+    "source_id": "49755024"
+  },
+  {
+    "id": "conway_project_duration",
+    "question": "According to the article, roughly how long did the author spend working on this project?",
+    "answer_type": "text",
+    "expected_answer": "a month",
+    "accepted_answers": ["one month", "1 month", "an entire month"],
     "source_id": "49755024"
   },
   {
@@ -44,6 +82,21 @@
     "source_id": "49746401"
   },
   {
+    "id": "office_wine_default_runner",
+    "question": "What is the default value of the MS365_RUNNER environment variable in the flake?",
+    "answer_type": "text",
+    "expected_answer": "ge",
+    "accepted_answers": ["GE-Proton", "ge (GE-Proton)"],
+    "source_id": "49746401"
+  },
+  {
+    "id": "office_wine_default_product",
+    "question": "What is the default MS365_PRODUCT (ODT product id) used by the flake if not overridden?",
+    "answer_type": "text",
+    "expected_answer": "O365ProPlusRetail",
+    "source_id": "49746401"
+  },
+  {
     "id": "korea_fine_revenue_cap",
     "question": "Under Korea's revised Personal Information Protection Act, up to what percentage of total revenue can companies be fined for serious data breaches?",
     "answer_type": "text",
@@ -56,6 +109,35 @@
     "question": "Within how many hours must companies in Korea notify users of a high risk of data exposure, even if a leak hasn't been confirmed?",
     "answer_type": "number",
     "expected_answer": "72",
+    "source_id": "49759466"
+  },
+  {
+    "id": "korea_old_fine_cap",
+    "question": "Before this revision, what was the maximum fine, as a percentage of sales, that Korean companies faced for data breaches?",
+    "answer_type": "number",
+    "expected_answer": "3",
+    "source_id": "49759466"
+  },
+  {
+    "id": "korea_coupang_fine_won",
+    "question": "How much was Coupang fined in June for leaking the personal data of 37.55 million people, according to the article?",
+    "answer_type": "text",
+    "expected_answer": "624.6 billion won",
+    "accepted_answers": ["624.6 billion won ($466.3 million)", "$466.3 million"],
+    "source_id": "49759466"
+  },
+  {
+    "id": "korea_coupang_affected_people",
+    "question": "According to the article, how many million people's personal data did Coupang leak in the case cited as an example?",
+    "answer_type": "number",
+    "expected_answer": "37.55",
+    "source_id": "49759466"
+  },
+  {
+    "id": "korea_investment_reduction_pct",
+    "question": "By what maximum percentage can a fine be reduced if a company had already invested in data protection, per the revised Korean rules?",
+    "answer_type": "number",
+    "expected_answer": "40",
     "source_id": "49759466"
   },
   {
@@ -72,5 +154,64 @@
     "answer_type": "number",
     "expected_answer": "25%",
     "source_id": "49758580"
+  },
+  {
+    "id": "cloudflare_dns_team_ram",
+    "question": "How much memory had Cloudflare's DNS team already reclaimed the month before the Pingora Backend Router RAM savings described in the article?",
+    "answer_type": "text",
+    "expected_answer": "100TB",
+    "accepted_answers": ["100 TB"],
+    "source_id": "49758580"
+  },
+  {
+    "id": "cloudflare_hashes_per_server_default",
+    "question": "What is the default number of hash points per server used by NGINX and Pingora's ketama implementation, per the article?",
+    "answer_type": "number",
+    "expected_answer": "160",
+    "source_id": "49758580"
+  },
+  {
+    "id": "cloudflare_hash_reduction_pct",
+    "question": "By what percentage did Cloudflare decide to reduce the number of hashes generated per server, based on their math?",
+    "answer_type": "number",
+    "expected_answer": "90",
+    "source_id": "49758580"
+  },
+  {
+    "id": "quicktunnels_command",
+    "question": "What exact command does the article show for launching a Cloudflare Quick Tunnel pointing at a local server on port 8000?",
+    "answer_type": "text",
+    "expected_answer": "cloudflared tunnel --url http://localhost:8000",
+    "source_id": "49754785"
+  },
+  {
+    "id": "quicktunnels_preview_domain",
+    "question": "What domain does Cloudflare use for the preview URL generated by Quick Tunnels?",
+    "answer_type": "text",
+    "expected_answer": "trycloudflare.com",
+    "source_id": "49754785"
+  },
+  {
+    "id": "quicktunnels_protection",
+    "question": "Besides automatic HTTPS, what other kind of protection does Cloudflare's Quick Tunnels provide, according to the article?",
+    "answer_type": "text",
+    "expected_answer": "DDoS protection",
+    "accepted_answers": ["DDoS", "protection against DDoS"],
+    "source_id": "49754785"
+  },
+  {
+    "id": "unsupported_tesla_stock",
+    "question": "What was Tesla's closing stock price on the day of its most recent earnings call?",
+    "expect_supported": false
+  },
+  {
+    "id": "unsupported_google_quantum_qubits",
+    "question": "How many qubits does Google's latest quantum computing chip have, according to the indexed articles?",
+    "expect_supported": false
+  },
+  {
+    "id": "unsupported_openai_valuation",
+    "question": "What is OpenAI's latest reported company valuation, according to the indexed articles?",
+    "expect_supported": false
   }
 ]
