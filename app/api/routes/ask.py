@@ -17,7 +17,20 @@ router = APIRouter(prefix="/ask", tags=["ask"])
 ASK_RATE_LIMIT = "10/minute"
 
 
-@router.post("/", response_model=AskResponse)
+@router.post(
+    "/",
+    response_model=AskResponse,
+    summary="Ask a grounded question over the indexed news corpus",
+    description=(
+        "Retrieves the most relevant chunks for the question via semantic search, then asks an "
+        "LLM to answer strictly from that retrieved context - never from outside knowledge. If the "
+        "retrieved evidence doesn't support a confident answer, `supported` is `false` and `answer` "
+        "is `\"Not enough information\"` instead of a hallucinated guess.\n\n"
+        f"Rate limited to {ASK_RATE_LIMIT.split('/')[0]} requests/minute per client IP, "
+        "since each call spends OpenAI credits."
+    ),
+    responses={429: {"description": "Rate limit exceeded (10 requests/minute per client IP)."}},
+)
 @limiter.limit(ASK_RATE_LIMIT)
 def ask_news(request: Request, ask_request: AskRequest, db: Session = Depends(get_db)) -> AskResponse:
     """Retrieve relevant news chunks and answer from that evidence only."""
