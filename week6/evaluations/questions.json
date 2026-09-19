@@ -1,0 +1,76 @@
+[
+  {
+    "id": "harness_matched_settings_count",
+    "question": "How many matched settings did the empirical study of coding-agent harnesses evaluate across four models?",
+    "answer_type": "number",
+    "expected_answer": "176",
+    "source_id": "49753878"
+  },
+  {
+    "id": "harness_predefined_tools_bash",
+    "question": "True or false: according to the study, predefined tools improve performance for models with weaker bash proficiency.",
+    "answer_type": "boolean",
+    "expected_answer": "true",
+    "source_id": "49753878"
+  },
+  {
+    "id": "conway_conjecture_age",
+    "question": "According to the article, how many years ago did John Conway pose the refinement conjecture that the author eventually got proved?",
+    "answer_type": "number",
+    "expected_answer": "50",
+    "source_id": "49755024"
+  },
+  {
+    "id": "conway_cache_read_percentage",
+    "question": "In the author's rough token-usage estimate for the Conway's-conjecture project, what percentage of tokens were cache reads?",
+    "answer_type": "text",
+    "expected_answer": "over 95%",
+    "accepted_answers": ["95%", "more than 95%", "over 95 percent"],
+    "source_id": "49755024"
+  },
+  {
+    "id": "office_wine_webview2_size",
+    "question": "How large is the WebView2 runtime download that 'ms365 winetricks webview2' installs into the prefix?",
+    "answer_type": "text",
+    "expected_answer": "680 MB",
+    "accepted_answers": ["680MB"],
+    "source_id": "49746401"
+  },
+  {
+    "id": "office_wine_spp_error_code",
+    "question": "What error code does Office's full SPP (Software Protection Platform) validation fail with under Wine, per the article?",
+    "answer_type": "text",
+    "expected_answer": "0xC004E003",
+    "source_id": "49746401"
+  },
+  {
+    "id": "korea_fine_revenue_cap",
+    "question": "Under Korea's revised Personal Information Protection Act, up to what percentage of total revenue can companies be fined for serious data breaches?",
+    "answer_type": "text",
+    "expected_answer": "10 percent",
+    "accepted_answers": ["10%", "up to 10 percent"],
+    "source_id": "49759466"
+  },
+  {
+    "id": "korea_breach_notification_hours",
+    "question": "Within how many hours must companies in Korea notify users of a high risk of data exposure, even if a leak hasn't been confirmed?",
+    "answer_type": "number",
+    "expected_answer": "72",
+    "source_id": "49759466"
+  },
+  {
+    "id": "cloudflare_ram_reclaimed",
+    "question": "How much RAM did Cloudflare reclaim globally from the consistent-hashing changes to Pingora Backend Router described in the article?",
+    "answer_type": "text",
+    "expected_answer": "100TB",
+    "accepted_answers": ["100 TB", "more than 100TB", "more than 100 TB"],
+    "source_id": "49758580"
+  },
+  {
+    "id": "cloudflare_point_struct_memory_reduction",
+    "question": "By what percentage did changing the Point struct's byte layout reduce the memory used for consistent hashing, according to the article?",
+    "answer_type": "number",
+    "expected_answer": "25%",
+    "source_id": "49758580"
+  }
+]

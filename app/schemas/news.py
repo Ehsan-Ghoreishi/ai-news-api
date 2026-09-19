@@ -31,3 +31,28 @@ class SearchResult(BaseModel):
     url: HttpUrl  # link to the original article
     chunk_content: str  # the matched chunk's text
     similarity: float  # similarity score of the chunk to the query
+
+
+class AskRequest(BaseModel):
+    question: str  # the user's natural-language question
+    limit: int = 5  # max number of chunks to retrieve for grounding
+
+
+class GroundedAnswer(BaseModel):
+    answer: str  # LLM-generated answer text
+    supported: bool  # whether the answer is actually backed by the retrieved chunks
+
+
+class AnswerCitation(BaseModel):
+    news_item_id: int  # id of the article this citation comes from
+    source_id: str  # the article's id/slug on the source site
+    title: str  # article headline
+    url: HttpUrl  # link to the original article
+    chunk_content: str  # the cited chunk's text
+
+
+class AskResponse(BaseModel):
+    question: str  # the original question asked
+    answer: str  # LLM-generated answer text
+    supported: bool  # whether the answer is actually backed by the retrieved chunks
+    citations: list[AnswerCitation]  # chunks/articles used to support the answer
