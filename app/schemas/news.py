@@ -82,8 +82,7 @@ class AskRequest(BaseModel):
     )
 
     question: str = Field(description="The user's natural-language question.")
-    limit: int = Field(default=5, ge=1, le=20, description="Max number of chunks to retrieve for grounding.")
-
+    limit: int = Field(default=10, ge=1, le=20, description="Max number of chunks to retrieve for grounding.")
 
 class GroundedAnswer(BaseModel):
     answer: str = Field(description="LLM-generated answer text.")
