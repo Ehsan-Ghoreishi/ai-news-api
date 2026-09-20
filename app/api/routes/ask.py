@@ -49,23 +49,27 @@ def ask_news(
 
     grounded = answer_from_context(ask_request.question, [result.chunk_content for result in results])
 
-    # SearchResult has no source_id, so we look each news item up to build the citation.
-    # The lookup can miss (e.g. item deleted after indexing) - skip those rather than crash.
+    # Only build citations when the LLM actually grounded its answer in the retrieved
+    # chunks. Otherwise the retrieved chunks were judged irrelevant, so citing them
+    # would misrepresent them as sources that were actually used.
     citations = []
-    for result in results:
-        news_item = get_news_item(db, result.news_item_id)
-        if news_item is None:
-            logger.warning("Skipping citation for missing news_item_id=%s", result.news_item_id)
-            continue
-        citations.append(
-            AnswerCitation(
-                news_item_id=result.news_item_id,
-                source_id=news_item.source_id,
-                title=result.title,
-                url=result.url,
-                chunk_content=result.chunk_content,
+    if grounded.supported:
+        # SearchResult has no source_id, so we look each news item up to build the citation.
+        # The lookup can miss (e.g. item deleted after indexing) - skip those rather than crash.
+        for result in results:
+            news_item = get_news_item(db, result.news_item_id)
+            if news_item is None:
+                logger.warning("Skipping citation for missing news_item_id=%s", result.news_item_id)
+                continue
+            citations.append(
+                AnswerCitation(
+                    news_item_id=result.news_item_id,
+                    source_id=news_item.source_id,
+                    title=result.title,
+                    url=result.url,
+                    chunk_content=result.chunk_content,
+                )
             )
-        )
     return AskResponse(
         question=ask_request.question, answer=grounded.answer, supported=grounded.supported, citations=citations
     )

@@ -115,6 +115,36 @@ class TestAskRoute(unittest.TestCase):
         self.assertEqual(body["citations"], [])
         self.assertEqual(body["answer"], "Not enough information")
 
+    @patch("app.api.routes.ask.get_news_item")
+    @patch("app.api.routes.ask.answer_from_context")
+    @patch("app.api.routes.ask.search_similar_chunks")
+    @patch("app.api.routes.ask.create_embedding")
+    def test_ask_with_unsupported_answer_omits_citations(
+        self, mock_embed, mock_search, mock_answer, mock_get_item
+    ):
+        # Chunks were retrieved (loosely similar), but the LLM judged them insufficient
+        # to answer the question - citations must not reference sources that weren't
+        # actually used to ground the answer.
+        mock_embed.return_value = [0.1] * 1536
+        mock_search.return_value = [
+            SearchResult(
+                news_item_id=1,
+                title="Unrelated Article",
+                url="https://example.com/article",
+                chunk_content="some loosely similar but irrelevant text",
+                similarity=0.4,
+            )
+        ]
+        mock_answer.return_value = GroundedAnswer(answer="Not enough information", supported=False)
+
+        response = client.post("/ask/", json={"question": "What is the answer?", "limit": 5})
+
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertFalse(body["supported"])
+        self.assertEqual(body["citations"], [])
+        mock_get_item.assert_not_called()
+
     def test_ask_missing_question_field_is_rejected(self):
         response = client.post("/ask/", json={})
         self.assertEqual(response.status_code, 422)
