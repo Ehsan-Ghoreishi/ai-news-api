@@ -25,4 +25,6 @@ def enrich_article(title: str, content: str) -> ArticleEnrichment:
         ],
         text_format=ArticleEnrichment,
     )
+    if response.output_parsed is None:
+        raise RuntimeError("OpenAI response did not include parsed ArticleEnrichment output")
     return response.output_parsed

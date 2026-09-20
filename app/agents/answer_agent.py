@@ -36,4 +36,6 @@ def answer_from_context(question: str, contexts: list[str]) -> GroundedAnswer:
         ],
         text_format=GroundedAnswer,
     )
+    if response.output_parsed is None:
+        raise RuntimeError("OpenAI response did not include parsed GroundedAnswer output")
     return response.output_parsed
