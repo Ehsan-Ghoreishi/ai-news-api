@@ -1,10 +1,11 @@
 """The one canonical NewsItem schema."""
 
 from datetime import datetime
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
-_NEWS_ITEM_EXAMPLE = {
+_NEWS_ITEM_EXAMPLE: dict[str, Any] = {
     "id": 8,
     "source": "hackernews",
     "source_id": "49758580",

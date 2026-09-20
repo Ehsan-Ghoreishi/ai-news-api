@@ -22,6 +22,8 @@ def run_indexing() -> None:
     try:
         items = get_unindexed_news_items(db)
         for item in items:
+            if item.id is None:
+                raise RuntimeError(f"Cannot index unpersisted news item: {item.title!r} has no id")
             chunks = _chunk_text(item.content or "")
             embeddings = [create_embedding(chunk) for chunk in chunks]
             insert_news_chunks(db, item.id, chunks, embeddings)

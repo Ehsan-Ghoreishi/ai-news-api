@@ -26,7 +26,7 @@ def score_answer(
         if not model_match:
             return False
 
-        def normalize(token: str) -> str:
+        def normalize_bool_token(token: str) -> str:
             token = token.lower()
             if token == "yes":
                 return "true"
@@ -34,8 +34,8 @@ def score_answer(
                 return "false"
             return token
 
-        model_value = normalize(model_match.group(1))
-        expected_value = normalize(expected_answer.strip())
+        model_value = normalize_bool_token(model_match.group(1))
+        expected_value = normalize_bool_token(expected_answer.strip())
         return model_value == expected_value
 
     if answer_type == "text":
@@ -43,11 +43,11 @@ def score_answer(
         return True if model_answer contains expected_answer, or any of
         accepted_answers, as a substring."""
 
-        def normalize(text: str) -> str:
+        def normalize_text(text: str) -> str:
             return re.sub(r"\s+", " ", text.strip().lower())
 
-        normalized_model = normalize(model_answer)
+        normalized_model = normalize_text(model_answer)
         candidates = [expected_answer] + (accepted_answers or [])
-        return any(normalize(candidate) in normalized_model for candidate in candidates)
+        return any(normalize_text(candidate) in normalized_model for candidate in candidates)
 
     raise ValueError(f"Unknown answer_type: {answer_type!r}")

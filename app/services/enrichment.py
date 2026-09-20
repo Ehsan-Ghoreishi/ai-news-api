@@ -11,6 +11,8 @@ def run_enrichment() -> None:
     try:
         items = get_unenriched_news_items(db)
         for item in items:
+            if item.id is None:
+                raise RuntimeError(f"Cannot enrich unpersisted news item: {item.title!r} has no id")
             enrichment = enrich_article(item.title, item.content or "")
             save_enrichment(db, item.id, enrichment)
     finally:
