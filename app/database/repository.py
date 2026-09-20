@@ -35,8 +35,9 @@ def insert_news_item(db: Session, item: NewsItem) -> None:
 
 def get_unenriched_news_items(db: Session) -> list[NewsItem]:
     """Return items that have not been enriched yet (no summary)."""
-    models = db.scalars(select(NewsItemModel).where(
-        NewsItemModel.summary.is_(None))).all()
+    models = db.scalars(
+        select(NewsItemModel).where(NewsItemModel.summary.is_(None))
+    ).all()
     return [_to_news_item(m) for m in models]
 
 
@@ -53,8 +54,7 @@ def save_enrichment(db: Session, item_id: int, enrichment: ArticleEnrichment) ->
 def get_all_news_items(db: Session, limit: int = 100) -> list[NewsItem]:
     """Return the most recently scraped news items, newest first."""
     models = db.scalars(
-        select(NewsItemModel).order_by(
-            NewsItemModel.scraped_at.desc()).limit(limit)
+        select(NewsItemModel).order_by(NewsItemModel.scraped_at.desc()).limit(limit)
     ).all()
     return [_to_news_item(m) for m in models]
 
@@ -90,17 +90,20 @@ def insert_news_chunks(
         }
         for index, (content, embedding) in enumerate(zip(chunks, embeddings))
     ]
-    stmt = insert(NewsChunkModel).values(values).on_conflict_do_nothing(
-        index_elements=["news_item_id", "chunk_index"]
+    stmt = (
+        insert(NewsChunkModel)
+        .values(values)
+        .on_conflict_do_nothing(index_elements=["news_item_id", "chunk_index"])
     )
     db.execute(stmt)
     db.commit()
 
 
-def search_similar_chunks(db: Session, embedding: list[float], limit: int = 10) -> list[SearchResult]:
-                          """Find the chunks whose embedding is most similar (max inner product) to the query embedding."""
-   # <#> is negative inner product distance (pgvector); smaller = more similar, so we negate it back into a similarity score.
-   distance = NewsChunkModel.embedding.max_inner_product(embedding)
+def search_similar_chunks(
+    db: Session, embedding: list[float], limit: int = 10
+) -> list[SearchResult]:
+    """Find chunks most similar to the query embedding using pgvector max-inner-product."""
+    distance = NewsChunkModel.embedding.max_inner_product(embedding)
     rows = db.execute(
         select(
             NewsItemModel.id,
