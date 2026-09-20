@@ -1,9 +1,20 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from app.api.rate_limit import limiter
 from app.api.routes import ask, health, news, search
+
+
+def _handle_rate_limit_exceeded(request: Request, exc: Exception) -> Response:
+    """Adapt slowapi's handler to the Exception-typed signature Starlette expects.
+
+    add_exception_handler is only ever called with RateLimitExceeded below, so
+    this cast is safe; slowapi's own handler is typed narrower than Starlette wants.
+    """
+    assert isinstance(exc, RateLimitExceeded)
+    return _rate_limit_exceeded_handler(request, exc)
+
 
 app = FastAPI(
     title="AI News API",
@@ -16,7 +27,7 @@ app = FastAPI(
     version="0.1.0",
 )
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_exception_handler(RateLimitExceeded, _handle_rate_limit_exceeded)
 
 app.include_router(health.router)
 app.include_router(news.router)
