@@ -27,18 +27,18 @@ client = TestClient(app)
 
 
 def _news_item(**overrides) -> NewsItem:
-    defaults = dict(
-        id=1,
-        source="hackernews",
-        source_id="123",
-        title="Test Article",
-        url="https://example.com/article",
-        author=None,
-        content="body text",
-        scraped_at="2026-01-01T00:00:00",
-        summary=None,
-        tags=[],
-    )
+    defaults = {
+        "id": 1,
+        "source": "hackernews",
+        "source_id": "123",
+        "title": "Test Article",
+        "url": "https://example.com/article",
+        "author": None,
+        "content": "body text",
+        "scraped_at": "2026-01-01T00:00:00",
+        "summary": None,
+        "tags": [],
+    }
     defaults.update(overrides)
     return NewsItem(**defaults)
 

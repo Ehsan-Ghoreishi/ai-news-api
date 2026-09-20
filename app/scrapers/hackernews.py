@@ -1,6 +1,6 @@
 """Scrapers that fetch external data and return NewsItem objects."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import requests
 import trafilatura
@@ -37,7 +37,7 @@ def scrape_top_stories(limit: int = 5) -> list[NewsItem]:
                 url=url,
                 author=story.get("by"),
                 content=content,
-                scraped_at=datetime.now(timezone.utc),
+                scraped_at=datetime.now(UTC),
                 summary=None,
                 tags=[],
             )

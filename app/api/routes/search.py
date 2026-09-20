@@ -24,7 +24,7 @@ router = APIRouter(prefix="/search", tags=["search"])
 def search(
     q: str = Query(description="Natural-language search query.", examples=["consistent hashing memory savings"]),
     limit: int = Query(default=5, ge=1, le=50, description="Max number of chunks to return."),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db),  # noqa: B008  (FastAPI DI idiom)
 ) -> list[SearchResult]:
     embedding = create_embedding(q)
     return search_similar_chunks(db, embedding, limit=limit)
