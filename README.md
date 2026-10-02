@@ -301,3 +301,21 @@ By default it talks to `http://localhost:8000`; point it elsewhere with the
 ```bash
 API_BASE_URL=http://localhost:8001 uv run streamlit run streamlit_app.py
 ```
+
+## Observability
+
+Every call to `answer_from_context` (the LLM step behind `/ask/`) is traced
+in [Langfuse](https://langfuse.com) when credentials are configured -
+request, retrieved context, prompt, tokens, latency, and the parsed
+`GroundedAnswer` output, in one navigable trace per question.
+
+It's fully optional: with `LANGFUSE_PUBLIC_KEY`/`LANGFUSE_SECRET_KEY` unset,
+`answer_from_context` runs exactly as before, untraced, and the test suite
+(which sets no Langfuse env vars) is unaffected.
+
+```bash
+# .env
+LANGFUSE_PUBLIC_KEY=pk-lf-...
+LANGFUSE_SECRET_KEY=sk-lf-...
+LANGFUSE_HOST=https://cloud.langfuse.com   # EU; use https://us.cloud.langfuse.com for US projects, or a self-hosted URL
+```

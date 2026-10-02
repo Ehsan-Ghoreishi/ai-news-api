@@ -1,12 +1,35 @@
 """LLM calls only."""
 
+import os
+from collections.abc import Callable
+
+from dotenv import load_dotenv
+from langfuse import observe
 from openai import OpenAI
 
 from app.schemas.news import GroundedAnswer
 
+# Load .env before _observe_if_configured runs: it checks LANGFUSE_* at import
+# time, and this module can be imported before app.database.connection (which
+# also calls load_dotenv) depending on import order.
+load_dotenv()
+
 ANSWER_MODEL = "gpt-4o-mini"
 
 client = OpenAI()
+
+
+def _observe_if_configured(func: Callable) -> Callable:
+    """Wrap with Langfuse tracing only when credentials are set.
+
+    Keeps the app (and the test suite, which runs with no
+    LANGFUSE_* env vars) fully functional without Langfuse -
+    observability is additive, never a hard dependency.
+    """
+    if os.environ.get("LANGFUSE_PUBLIC_KEY") and os.environ.get("LANGFUSE_SECRET_KEY"):
+        return observe()(func)
+    return func
+
 
 INSTRUCTIONS = (
     "Answer only from the supplied context. Do not use outside knowledge. "
@@ -17,6 +40,7 @@ INSTRUCTIONS = (
 )
 
 
+@_observe_if_configured
 def answer_from_context(question: str, contexts: list[str]) -> GroundedAnswer:
     """Ask the LLM to answer a question strictly from the given context chunks."""
     numbered_contexts = "\n\n".join(
