@@ -21,20 +21,15 @@ st.caption(f"Talking to API at {API_BASE_URL}")
 with st.expander("How this works"):
     st.markdown(
         """
-        This app doesn't let the AI answer from memory. When you ask a
-        question, it:
+        When you ask a question, the app:
 
-        1. **Searches** a database of indexed news articles for the chunks
-           of text most relevant to your question (semantic search, not
-           keyword matching).
-        2. **Hands those chunks to the AI** and instructs it to answer using
-           *only* that text - never its own outside knowledge.
-        3. **Checks whether the answer is actually backed by the retrieved
-           text.** If it isn't, you get an honest "not enough information"
-           instead of a guess, and no sources are cited.
-
-        That's why every answer below comes with a **Supported** flag and,
-        when supported, the exact articles it was built from.
+        1. **Searches** a database of indexed news articles for the passages most
+           relevant to your question (semantic search, not keyword matching).
+        2. **Hands those passages to the AI**, which writes an answer using *only*
+           that text - and shows you the **sources** it used.
+        3. **Is upfront when the articles don't cover your question.** You can still
+           get an answer from the AI's general knowledge, but it's clearly labelled
+           as *not* coming from the indexed articles and is not verified.
         """
     )
 
@@ -75,9 +70,18 @@ def _request(method: str, path: str, **kwargs: Any) -> Any | None:
     return _handle_response(response)
 
 
-def _post_ask(question: str, limit: int) -> dict[str, Any] | None:
+def _post_ask(
+    question: str, limit: int, detailed: bool, allow_general_knowledge: bool
+) -> dict[str, Any] | None:
     result: dict[str, Any] | None = _request(
-        "POST", "/ask/", json={"question": question, "limit": limit}
+        "POST",
+        "/ask/",
+        json={
+            "question": question,
+            "limit": limit,
+            "style": "detailed" if detailed else "concise",
+            "allow_general_knowledge": allow_general_knowledge,
+        },
     )
     return result
 
@@ -89,45 +93,92 @@ def _get_search(query: str, limit: int) -> list[dict[str, Any]] | None:
     return results
 
 
+EXAMPLE_QUESTIONS = [
+    "What is the coding-agent harness study about, and what did it find?",
+    "Summarize the main AI news in the indexed articles.",
+    "How did the Conway's conjecture proof get built, and what did it cost?",
+]
+
+
+def _render_answer(result: dict[str, Any]) -> None:
+    """Show the answer as normal text, with a clear label for where it came from."""
+    source = result.get("answer_source", "articles" if result["supported"] else "none")
+
+    if source == "articles":
+        st.caption("Answered from the indexed news articles")
+        st.markdown(result["answer"])
+    elif source == "general_knowledge":
+        st.info(
+            "The indexed articles don't cover this question, so the answer below comes from "
+            "the AI's general knowledge. It is not backed by any article and isn't verified."
+        )
+        st.markdown(result["answer"])
+    else:
+        st.warning(
+            "The indexed articles don't contain enough information to answer this question."
+        )
+
+    if result["citations"]:
+        st.subheader("Sources")
+        shown: set[str] = set()
+        for citation in result["citations"]:
+            if citation["url"] in shown:
+                continue
+            shown.add(citation["url"])
+            with st.expander(citation["title"]):
+                st.markdown(f"[Open article]({citation['url']})")
+                st.caption("Passage used:")
+                st.write(citation["chunk_content"])
+    elif result.get("related_articles"):
+        st.subheader("Closest articles in the index")
+        st.caption("What the index does cover, in case it helps:")
+        for article in result["related_articles"]:
+            st.markdown(f"- [{article['title']}]({article['url']})")
+
+
 with ask_tab:
     st.write(
-        "Ask a natural-language question. The answer is grounded strictly in indexed articles."
+        "Ask a question in plain English. Answers come with the sources they were built from."
     )
+
+    st.caption("Try an example:")
+    example_columns = st.columns(len(EXAMPLE_QUESTIONS))
+    for column, example in zip(example_columns, EXAMPLE_QUESTIONS, strict=True):
+        if column.button(example, key=f"example_{example}", use_container_width=True):
+            st.session_state["ask_question"] = example
+
     question = st.text_input(
         "Your question",
-        placeholder="How much RAM did Cloudflare reclaim?",
+        placeholder="How much RAM did Cloudflare reclaim, and how?",
         key="ask_question",
     )
-    ask_limit = st.slider(
-        "Max chunks to retrieve for grounding",
-        min_value=1,
-        max_value=20,
-        value=5,
-        key="ask_limit",
-    )
+
+    with st.expander("Options"):
+        detailed = st.checkbox(
+            "Detailed answers (uncheck for a short, bare answer)",
+            value=True,
+            key="ask_detailed",
+        )
+        allow_general_knowledge = st.checkbox(
+            "If the articles don't cover it, answer from the AI's general knowledge "
+            "(clearly labelled, unverified)",
+            value=True,
+            key="ask_general_knowledge",
+        )
+        ask_limit = st.slider(
+            "How many passages to retrieve",
+            min_value=1,
+            max_value=20,
+            value=10,
+            key="ask_limit",
+        )
 
     if st.button("Ask", type="primary") and question.strip():
-        with st.spinner("Retrieving evidence and asking the model..."):
-            result = _post_ask(question, ask_limit)
+        with st.spinner("Retrieving evidence and writing an answer..."):
+            result = _post_ask(question, ask_limit, detailed, allow_general_knowledge)
 
         if result is not None:
-            if result["supported"]:
-                st.success(f"**Answer:** {result['answer']}")
-            else:
-                st.warning(f"**Answer:** {result['answer']}")
-            st.metric(
-                "Supported by retrieved evidence",
-                "Yes" if result["supported"] else "No",
-            )
-
-            if result["citations"]:
-                st.subheader("Sources")
-                for citation in result["citations"]:
-                    st.markdown(f"- [{citation['title']}]({citation['url']})")
-            else:
-                st.caption(
-                    "No sources cited - the answer wasn't grounded in the retrieved articles."
-                )
+            _render_answer(result)
 
 with search_tab:
     st.write(

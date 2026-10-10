@@ -284,6 +284,32 @@ citations gets the same treatment: `get_news_item` can return `None` if the
 item was deleted after indexing, and `ask.py` skips that citation rather
 than crashing the whole request over one stale reference.
 
+## Answer modes
+
+`POST /ask/` accepts two optional fields besides `question` and `limit`:
+
+| Field | Default | Meaning |
+|---|---|---|
+| `style` | `"detailed"` | `"detailed"` answers in complete sentences (direct answer first, then the key supporting details). `"concise"` returns only the bare value (a number, a name, `Yes`/`No`); the evaluation harness uses it. |
+| `allow_general_knowledge` | `true` | If the indexed articles do not support an answer, answer from the model's general knowledge instead of refusing. Set `false` for strict, article-only behaviour. |
+
+The response adds two fields:
+
+- `answer_source`: `"articles"` (answer backed by retrieved passages, `citations` populated), `"general_knowledge"` (not backed by any article; `supported` is `false` and `citations` is empty), or `"none"` (strict mode and nothing relevant found: `"Not enough information"`).
+- `related_articles`: the closest indexed articles by similarity, returned when no citation is available, so a refused or general-knowledge answer still points somewhere.
+
+```bash
+curl -X POST http://localhost:8001/ask/ \
+  -H "Content-Type: application/json" \
+  -d '{"question": "Why does consistent hashing matter for Pingora?", "style": "detailed"}'
+```
+
+### Limitations
+
+- The knowledge base is whatever the scheduled ingestion job has scraped (`SCRAPE_LIMIT`, default 30 Hacker News stories per run; pages with under 500 characters of extractable text are skipped). Questions outside that corpus are answered from general knowledge and labelled as such; the model has no live data, so recent events may be wrong or missing.
+- `supported` means "backed by retrieved articles", not "the answer is correct".
+- The evaluation (`week6/evaluations`) always uses `style="concise"` and `allow_general_knowledge=false`, so it measures strict article-grounded accuracy and correct refusals, not the quality of long-form answers.
+
 ## Frontend
 
 A small Streamlit app (`streamlit_app.py`) provides a UI over `/ask/` and

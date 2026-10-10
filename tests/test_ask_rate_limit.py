@@ -31,10 +31,14 @@ class TestAskRateLimit(unittest.TestCase):
         mock_search.return_value = []  # short-circuits to the "not enough info" path
 
         for i in range(10):
-            response = client.post("/ask/", json={"question": f"question {i}"})
+            response = client.post(
+                "/ask/", json={"question": f"question {i}", "allow_general_knowledge": False}
+            )
             self.assertEqual(response.status_code, 200)
 
-        response = client.post("/ask/", json={"question": "one too many"})
+        response = client.post(
+            "/ask/", json={"question": "one too many", "allow_general_knowledge": False}
+        )
         self.assertEqual(response.status_code, 429)
 
 

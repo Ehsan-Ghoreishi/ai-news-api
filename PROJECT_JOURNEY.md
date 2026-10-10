@@ -173,6 +173,33 @@ small thing, but it's a real example of two independently-reasonable
 changes (protect a costly endpoint; write a thorough eval) interacting in a
 way neither one alone would have caught.
 
+## Feedback: "it only answers yes or no"
+
+After a demo, the one criticism was that the system should answer the questions
+asked, but it seemed to return only Yes/No. Investigation found five separate
+causes, none of them a single bug:
+
+1. The answer prompt had been tuned for exact-match evaluation, so it returned
+   bare tokens ("42", "Yes") rather than sentences. Good for scoring, poor as a
+   product.
+2. The Streamlit UI put a Yes/No "Supported" metric at the centre of the page,
+   which read as the answer.
+3. Anything outside the indexed articles got a dead-end "Not enough
+   information".
+4. The corpus was tiny: the scraper defaulted to 5 articles per run, and some
+   pages yielded only a JavaScript stub.
+5. The default retrieval depth was 5 chunks and the same source was listed
+   repeatedly.
+
+Changes: a `style` option (detailed by default, concise preserved untouched for
+the evaluation), a clearly labelled general-knowledge fallback
+(`answer_source`, `supported=false`, no fake citations), `related_articles` on
+non-grounded answers, a scraper default of 30 stories with a minimum-content
+filter, and a rewritten UI. The evaluation harness is pinned to strict mode so
+its 96.7% figure still measures what it did before. The lesson: optimising for
+a metric (exact-match accuracy) quietly shaped the product into something the
+metric liked and a user did not.
+
 ## What's still rough
 
 - The evaluation corpus is small. Production has 9 indexed articles, but 1

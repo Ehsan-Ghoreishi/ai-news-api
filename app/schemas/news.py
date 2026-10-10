@@ -1,7 +1,7 @@
 """The one canonical NewsItem schema."""
 
 from datetime import datetime
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
@@ -84,6 +84,24 @@ class AskRequest(BaseModel):
 
     question: str = Field(description="The user's natural-language question.")
     limit: int = Field(default=10, ge=1, le=20, description="Max number of chunks to retrieve for grounding.")
+    style: Literal["detailed", "concise"] = Field(
+        default="detailed",
+        description=(
+            "'detailed' (default) answers in clear, complete sentences with the key supporting "
+            "facts. 'concise' returns only the bare answer (a number, true/false, or a short "
+            "phrase) - this is what the evaluation harness uses so answers can be scored exactly."
+        ),
+    )
+    allow_general_knowledge: bool = Field(
+        default=True,
+        description=(
+            "If the indexed articles don't contain the answer, fall back to the model's own "
+            "general knowledge. The response is then clearly labelled "
+            "`answer_source='general_knowledge'` and `supported=false`, because it is NOT backed "
+            "by an indexed article. Set to false for strictly article-grounded answers only."
+        ),
+    )
+
 
 class GroundedAnswer(BaseModel):
     answer: str = Field(description="LLM-generated answer text.")
@@ -98,14 +116,25 @@ class AnswerCitation(BaseModel):
     chunk_content: str = Field(description="The cited chunk's text.")
 
 
+class RelatedArticle(BaseModel):
+    title: str = Field(description="Article headline.")
+    url: HttpUrl = Field(description="Link to the original article.")
+    similarity: float = Field(description="Similarity of the article's best chunk to the question.")
+
+
 class AskResponse(BaseModel):
     model_config = ConfigDict(
         json_schema_extra={
             "examples": [
                 {
                     "question": "How much RAM did Cloudflare reclaim from its consistent-hashing changes?",
-                    "answer": "100TB",
+                    "answer": (
+                        "Cloudflare reclaimed more than 100TB of RAM globally by shrinking the memory "
+                        "used for consistent hashing, on top of 100TB saved earlier by the DNS team."
+                    ),
                     "supported": True,
+                    "answer_source": "articles",
+                    "related_articles": [],
                     "citations": [
                         {
                             "news_item_id": 8,
@@ -124,6 +153,23 @@ class AskResponse(BaseModel):
     )
 
     question: str = Field(description="The original question asked.")
-    answer: str = Field(description="LLM-generated answer text, or 'Not enough information' if unsupported.")
-    supported: bool = Field(description="Whether the answer is actually backed by the retrieved chunks.")
+    answer: str = Field(description="The answer text.")
+    supported: bool = Field(
+        description="True only if the answer is backed by the retrieved articles (see `citations`)."
+    )
+    answer_source: Literal["articles", "general_knowledge", "none"] = Field(
+        default="articles",
+        description=(
+            "Where the answer came from: 'articles' (grounded in indexed news, with citations), "
+            "'general_knowledge' (the indexed articles had no answer, so the model answered from "
+            "its own knowledge - unverified, no citations), or 'none' (no answer available)."
+        ),
+    )
+    related_articles: list[RelatedArticle] = Field(
+        default=[],
+        description=(
+            "When the answer is not grounded in the articles: the closest indexed articles, so the "
+            "reader can see what the index does cover."
+        ),
+    )
     citations: list[AnswerCitation] = Field(description="Chunks/articles used to support the answer.")

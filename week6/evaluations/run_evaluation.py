@@ -19,10 +19,17 @@ RATE_LIMIT_RETRY_SECONDS = 61
 MAX_RATE_LIMIT_RETRIES = 3
 
 
+def _ask_payload(question: str) -> dict:
+    """Request body for /ask/. The harness scores exact answers and checks that the API declines
+    questions the corpus can't answer, so it opts in to the strict mode: bare 'concise' answers
+    and no general-knowledge fallback (the API's defaults are for human users, not for scoring)."""
+    return {"question": question, "limit": 5, "style": "concise", "allow_general_knowledge": False}
+
+
 def _ask(base_url: str, question: str) -> dict:
     """POST to /ask/, retrying once per minute if we're rate limited."""
     for attempt in range(MAX_RATE_LIMIT_RETRIES + 1):
-        response = requests.post(f"{base_url}/ask/", json={"question": question, "limit": 5})
+        response = requests.post(f"{base_url}/ask/", json=_ask_payload(question))
         if response.status_code != 429:
             response.raise_for_status()
             return response.json()
