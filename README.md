@@ -461,20 +461,20 @@ curl -X POST http://localhost:8001/ask/ \
 
 ![Streamlit demo](docs/images/streamlit-demo.png)
 
-A small Streamlit app (`streamlit_app.py`) provides a UI over `/ask/` and
+A small Streamlit app (`frontend/streamlit_app.py`) provides a UI over `/ask/` and
 `/search/` for anyone who'd rather not use curl or `/docs`.
 
 ```bash
 # from the repo root, with the FastAPI server already running (see above)
 uv add streamlit
-uv run streamlit run streamlit_app.py
+uv run streamlit run frontend/streamlit_app.py
 ```
 
 By default it talks to `http://localhost:8001`; point it elsewhere with the
 `API_BASE_URL` environment variable, e.g.:
 
 ```bash
-API_BASE_URL=https://ai-news-api-640738486923.europe-west1.run.app uv run streamlit run streamlit_app.py
+API_BASE_URL=https://ai-news-api-640738486923.europe-west1.run.app uv run streamlit run frontend/streamlit_app.py
 ```
 
 ## Observability
