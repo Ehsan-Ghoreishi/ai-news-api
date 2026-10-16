@@ -2,6 +2,7 @@
 
 import os
 from collections.abc import Callable
+from datetime import UTC, datetime
 from typing import Literal
 
 from dotenv import load_dotenv
@@ -30,6 +31,16 @@ def _observe_if_configured(func: Callable) -> Callable:
     if os.environ.get("LANGFUSE_PUBLIC_KEY") and os.environ.get("LANGFUSE_SECRET_KEY"):
         return observe()(func)
     return func
+
+
+def _today_context() -> str:
+    """Today's date, so the model never mistakes a date inside an article for the current one."""
+    today = datetime.now(UTC).strftime("%A, %d %B %Y")
+    return (
+        f"Today's date is {today} (UTC). Dates mentioned inside articles are when those articles "
+        "were written or when events happened; they are not today's date. Use today's date only "
+        "for questions about the current date or relative time (today, this week, how long ago)."
+    )
 
 
 # 'concise' is the original, extraction-style prompt. The evaluation harness relies on it
@@ -85,7 +96,11 @@ def answer_from_context(
         input=[
             {
                 "role": "system",
-                "content": DETAILED_INSTRUCTIONS if style == "detailed" else CONCISE_INSTRUCTIONS,
+                "content": (
+                    (DETAILED_INSTRUCTIONS if style == "detailed" else CONCISE_INSTRUCTIONS)
+                    + " "
+                    + _today_context()
+                ),
             },
             {
                 "role": "user",
@@ -109,7 +124,10 @@ def answer_from_general_knowledge(question: str) -> str:
     response = client.responses.create(
         model=ANSWER_MODEL,
         input=[
-            {"role": "system", "content": GENERAL_KNOWLEDGE_INSTRUCTIONS},
+            {
+                "role": "system",
+                "content": GENERAL_KNOWLEDGE_INSTRUCTIONS + " " + _today_context(),
+            },
             {"role": "user", "content": question},
         ],
     )
