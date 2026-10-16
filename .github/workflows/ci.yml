@@ -30,7 +30,7 @@ jobs:
       - name: Run unit tests
         run: uv run python -m unittest discover
 
-      # week6/evaluations/run_evaluation.py is a different kind of check: it
+      # evaluation/run_evaluation.py is a different kind of check: it
       # boots the real FastAPI app against a real Postgres+pgvector database
       # and drives POST /ask/ end-to-end, spending real OpenAI credits per
       # question. That only makes sense against a dedicated staging DB, never
@@ -47,14 +47,14 @@ jobs:
             curl -sf http://localhost:8001/health/ && break
             sleep 1
           done
-          uv run python -m week6.evaluations.run_evaluation \
+          uv run python -m evaluation.run_evaluation \
             --base-url http://localhost:8001 \
             --minimum-accuracy 0.8
 
       - name: Skip evaluation harness (no staging instance configured)
         if: ${{ vars.HAS_STAGING_DB != 'true' }}
         run: |
-          echo "Skipping week6/evaluations/run_evaluation.py: no staging DB is wired up for CI."
+          echo "Skipping evaluation/run_evaluation.py: no staging DB is wired up for CI."
           echo ""
           echo "This harness needs a real Postgres+pgvector instance with indexed news_items"
           echo "and spends OpenAI credits per question (30 questions x embedding + gpt-4o-mini"
@@ -66,4 +66,4 @@ jobs:
           echo ""
           echo "To run it yourself locally instead:"
           echo "  uv run uvicorn app.main:app --port 8001 &"
-          echo "  uv run python -m week6.evaluations.run_evaluation --base-url http://localhost:8001"
+          echo "  uv run python -m evaluation.run_evaluation --base-url http://localhost:8001"

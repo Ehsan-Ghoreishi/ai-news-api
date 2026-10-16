@@ -8,7 +8,7 @@ from pathlib import Path
 
 import requests
 
-from week6.evaluations.scoring import score_answer
+from evaluation.scoring import score_answer
 
 QUESTIONS_PATH = Path(__file__).parent / "questions.json"
 

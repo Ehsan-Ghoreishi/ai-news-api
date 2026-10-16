@@ -1,13 +1,11 @@
 # Project Journey
 
 This is an honest account of how `ai-news-api` was actually built, based on
-the real git history, not a cleaned-up retelling. It started as a weekly
-learning project (the `week6/` directory name is a leftover from that
-structure) and was later hardened into something worth putting in a
+the real git history, not a cleaned-up retelling. It started as a learning project and was later hardened into something worth putting in a
 portfolio. Some things were broken along the way and got fixed later; this
 doc says so.
 
-## Week 1 — Project skeleton
+## Project skeleton
 
 The repo started as an empty skeleton: `pyproject.toml`, a `Dockerfile`, a
 `docker-compose.yml` stub, and empty files for every module the eventual
@@ -16,7 +14,7 @@ architecture would need (`app/scrapers/`, `app/agents/`, `app/services/`,
 thing, decided up front: scraping, LLM calls, database access, and the API
 would live in separate folders and not import each other's internals.
 
-## Week 2 — Scraping and enrichment, no database yet
+## Scraping and enrichment, no database yet
 
 First real code: a HackerNews scraper (`app/scrapers/hackernews.py`) that
 returns `NewsItem` objects, and an enrichment agent that calls OpenAI's
@@ -30,12 +28,7 @@ slow, disk-based pipeline, but it let the scraping and LLM logic get built
 and tested independently of any storage decision - a deliberate simplicity
 trade-off, not an oversight.
 
-There's also a `playground/01_first_call.py` script from this point:
-literally the first exploratory call to the OpenAI API in this project,
-first as plain text, then as a structured-output call. It's still in the
-repo as a record of that first step.
-
-## Week 3 — A real database and the first API routes
+## A real database and the first API routes
 
 Postgres came in via `docker-compose.yml`, along with SQLAlchemy models
 (`NewsItemModel`), a `connection.py` with a `get_db` FastAPI dependency, and
@@ -48,12 +41,10 @@ This is also where the API itself starts existing as a real service:
 principle that the API never scrapes or writes during a request - only the
 batch pipeline does.
 
-## Week 4 — pgvector and semantic search
+## pgvector and semantic search
 
 The `docker-compose.yml` Postgres image was swapped for
-`pgvector/pgvector:pg17` specifically for this step (there's a comment in
-the compose file, still there today, noting the vector extension was "needed
-in week 4"). This added:
+`pgvector/pgvector:pg17` specifically for this step. This added:
 
 - `NewsChunkModel`, with an HNSW index on the embedding column
   (`vector_ip_ops` for inner-product similarity)
@@ -68,7 +59,7 @@ At this point the pipeline was ingestion → enrichment → indexing, and the
 API could do real semantic search - but there was no LLM-generated answer
 yet, just ranked raw chunks.
 
-## Week 5 — Actually deploying it
+## Actually deploying it
 
 The original `Dockerfile` was:
 
@@ -87,7 +78,7 @@ forced fixing it: install `uv`, sync dependencies into a venv with
 Cloud Run's `$PORT` env var instead of hardcoded. The live URL was added to
 the README right after this actually worked.
 
-## Week 6 — The RAG pipeline and the first evaluation harness
+## The RAG pipeline and the first evaluation harness
 
 This is where it became a RAG system rather than just semantic search:
 
@@ -98,7 +89,7 @@ This is where it became a RAG system rather than just semantic search:
   rather than guess
 - `POST /ask/`: embeds the question, retrieves chunks, calls the answer
   agent, and builds citations back to the source articles
-- `week6/evaluations/`: a small harness (`questions.json`,
+- `evaluation/`: a small harness (`questions.json`,
   `run_evaluation.py`, `scoring.py`) that hits a running `/ask/` endpoint
   with known questions and checks both retrieval (did it cite the right
   source article?) and answer correctness (number/boolean/text matching)
@@ -112,8 +103,7 @@ below.
 
 Everything above was the learning-project phase. What follows is a later,
 deliberate pass to turn a working prototype into something that holds up to
-scrutiny - done in one sitting, not spread over weeks, so it's listed
-separately rather than folded into the week numbering above.
+scrutiny - done in one sitting, so it's listed separately rather than folded into the sections above.
 
 **The evaluation set was thin, and the corpus had already moved on.**
 Re-running the harness meant first checking what was actually in the
@@ -167,7 +157,7 @@ above changes: with 30 questions hitting `/ask/` back-to-back and no
 authentication distinguishing the harness from any other caller, it tripped
 its own 10-requests/minute limit partway through and failed with a 429. The
 harness now backs off and retries after a rate-limit response instead of
-treating it as fatal (`week6/evaluations/run_evaluation.py`), the same way
+treating it as fatal (`evaluation/run_evaluation.py`), the same way
 any well-behaved client hitting a public rate-limited API should. It's a
 small thing, but it's a real example of two independently-reasonable
 changes (protect a costly endpoint; write a thorough eval) interacting in a

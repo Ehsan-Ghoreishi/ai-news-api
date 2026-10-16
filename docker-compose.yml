@@ -1,6 +1,6 @@
 services:
   db:
-    image: pgvector/pgvector:pg17   # plain Postgres + vector extension (needed in week 4)
+    image: pgvector/pgvector:pg17   # plain Postgres + vector extension (needed for vector search)
     ports: ["5432:5432"]
     environment:
       POSTGRES_USER: postgres

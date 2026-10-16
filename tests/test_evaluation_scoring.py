@@ -1,6 +1,6 @@
 import unittest
 
-from week6.evaluations.scoring import score_answer
+from evaluation.scoring import score_answer
 
 
 class TestScoreAnswer(unittest.TestCase):

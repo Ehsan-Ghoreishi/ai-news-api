@@ -145,8 +145,8 @@ Baseline run on 2026-10-16 against the live API (Cloud Run); the corpus held
 | Unanswerable questions correctly declined | 2/3 |
 | Retrieval accuracy (source article among cited) | 25/27 (92.6%) |
 
-Raw output: `week6/evaluations/results/2026-10-16.txt`
-Reproduce: `uv run python -m week6.evaluations.run_evaluation --base-url <API_URL>`
+Raw output: `evaluation/results/2026-10-16.txt`
+Reproduce: `uv run python -m evaluation.run_evaluation --base-url <API_URL>`
 
 ### Failure analysis
 
@@ -161,7 +161,7 @@ Reproduce: `uv run python -m week6.evaluations.run_evaluation --base-url <API_UR
    chunk containing the answer (90%) ranked 6th and was cut off by `limit=5`.
    The model answered with another figure from the retrieved text (25%, a
    memory reduction).
-4. `unsupported_openai_valuation` - the corpus has no OpenAI valuation. The
+4. `unsupported_openai_valuation` - no article in the corpus states an OpenAI valuation (checked by keyword search). The
    model answered with another company's valuation and returned
    `supported: true`.
 
@@ -353,7 +353,7 @@ curl -X POST http://localhost:8001/ask/ \
 
 - The knowledge base is whatever the scheduled ingestion job has scraped (`SCRAPE_LIMIT`, default 30 Hacker News stories per run; pages with under 500 characters of extractable text are skipped). Questions outside that corpus are answered from general knowledge and labelled as such; the model has no live data, so recent events may be wrong or missing.
 - `supported` means "backed by retrieved articles", not "the answer is correct".
-- The evaluation (`week6/evaluations`) always uses `style="concise"` and `allow_general_knowledge=false`, so it measures strict article-grounded accuracy and correct refusals, not the quality of long-form answers.
+- The evaluation (`evaluation`) always uses `style="concise"` and `allow_general_knowledge=false`, so it measures strict article-grounded accuracy and correct refusals, not the quality of long-form answers.
 
 ## Frontend
 

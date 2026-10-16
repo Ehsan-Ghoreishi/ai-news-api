@@ -3,7 +3,7 @@ import unittest
 from contextlib import redirect_stdout
 from unittest.mock import MagicMock, patch
 
-from week6.evaluations.run_evaluation import _ask, report
+from evaluation.run_evaluation import _ask, report
 
 
 class TestReport(unittest.TestCase):
@@ -31,8 +31,8 @@ class TestReport(unittest.TestCase):
 
 
 class TestAsk(unittest.TestCase):
-    @patch("week6.evaluations.run_evaluation.time.sleep")
-    @patch("week6.evaluations.run_evaluation.requests.post")
+    @patch("evaluation.run_evaluation.time.sleep")
+    @patch("evaluation.run_evaluation.requests.post")
     def test_retries_after_rate_limit(self, mock_post, mock_sleep):
         rate_limited = MagicMock(status_code=429)
         ok = MagicMock(status_code=200)
@@ -45,8 +45,8 @@ class TestAsk(unittest.TestCase):
         mock_sleep.assert_called_once_with(61)
         self.assertEqual(mock_post.call_count, 2)
 
-    @patch("week6.evaluations.run_evaluation.time.sleep")
-    @patch("week6.evaluations.run_evaluation.requests.post")
+    @patch("evaluation.run_evaluation.time.sleep")
+    @patch("evaluation.run_evaluation.requests.post")
     def test_gives_up_after_max_retries(self, mock_post, mock_sleep):
         import requests
 
