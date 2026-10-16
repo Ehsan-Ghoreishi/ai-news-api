@@ -241,6 +241,28 @@ but it equals the lowest similarity of any correctly answered question (it would
 to these 59 questions) and catches one of two failures. 0.55 catches both at the price of
 14 of 43 correct answers. No threshold was adopted.
 
+### Evidence-grounding experiment (tested, not adopted)
+
+Hypothesis: if the model must quote the sentence that answers the question, and the server
+checks that the quote exists verbatim in a retrieved chunk, unsupported answers and
+irrelevant citations should drop.
+
+Run against a temporary Cloud Run revision (00006, since rolled back) on the 59-question set:
+end-to-end 52/59 (88.1%) versus 54/59 for the production build, and article-level retrieval
+41/46 versus 44/46. One of the two failing unanswerable questions (`ext_trap_1`) was fixed,
+but three previously correct answers failed.
+
+Offline diagnosis (5 samples per question, local): the check rejected correct answers when
+the model paraphrased the sentence or joined two sentences with "...", and accepted wrong
+ones when the quoted sentence was real but about another company. `unsupported_openai_valuation`
+was verified 5 of 5 times with a sentence from the Typesafe AI article. A verbatim check proves
+that the quote exists in a retrieved chunk, not that it answers the question about the right
+entity. The code stays on the `evidence-grounding` branch; production runs without it.
+
+Citations in the production build list all 5 retrieved chunks, and only about half come from
+the expected article: 55.1% in the baseline run and 53.9% in a second run of the same build.
+The second run also gave 54/59 with the same five failures.
+
 ### Limitations of this evaluation
 
 - 30 questions over 6 articles (plus 3 unanswerable): the 95% Wilson interval
