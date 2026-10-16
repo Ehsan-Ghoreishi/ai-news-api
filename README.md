@@ -148,12 +148,31 @@ Baseline run on 2026-10-16 against the live API (Cloud Run); the corpus held
 Raw output: `evaluation/results/2026-10-16.txt`
 Reproduce: `uv run python -m evaluation.run_evaluation --base-url <API_URL>`
 
+### Re-run after adding today's date to the prompts
+
+Same harness, same live API, run again after deploying the date fix
+(`evaluation/results/2026-10-16-after-date-fix.txt`).
+
+| Metric | Baseline | After date fix |
+|---|---|---|
+| End-to-end accuracy | 26/30 (86.7%) | 26/30 (86.7%) |
+| Answerable questions answered correctly | 24/27 (88.9%) | 25/27 (92.6%) |
+| Unanswerable questions correctly declined | 2/3 | 2/3 |
+| Retrieval accuracy | 25/27 (92.6%) | 25/27 (92.6%) |
+
+The same four questions fail end to end. The one-question gain in answer
+accuracy is `harness_predefined_tools_bash`: the source article was still not
+retrieved, and a true/false question can be answered correctly by chance. Each
+number comes from a single run and the model is not deterministic, so treat
+differences of one question as noise.
+
 ### Failure analysis
 
 1. `harness_predefined_tools_bash` - retrieval miss. The generic phrasing
    ("True or false: according to the study ...") pulled five chunks from other
-   articles; a keyword-style query ranks the right article first. The API
-   correctly declined to answer.
+   articles; a keyword-style query ranks the right article first.
+   The baseline run declined to answer; the re-run answered "true" without
+   citing the source article.
 2. `conway_project_duration` - retrieval miss on an under-specified question
    ("this project", "the article"). The answer is in the corpus, but the
    question never names the topic.
