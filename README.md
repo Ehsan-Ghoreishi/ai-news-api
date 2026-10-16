@@ -8,6 +8,7 @@ per-IP rate limiting are all backed by a full test suite and a CI pipeline
 that runs on every push.
 
 **Live API:** https://ai-news-api-640738486923.europe-west1.run.app/docs
+[![CI](https://github.com/Ehsan-Ghoreishi/ai-news-api/actions/workflows/ci.yml/badge.svg)](https://github.com/Ehsan-Ghoreishi/ai-news-api/actions/workflows/ci.yml)
 
 ## Why this is interesting
 
