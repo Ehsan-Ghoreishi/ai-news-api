@@ -1,0 +1,221 @@
+[
+  {
+    "id": "ext_18_1",
+    "question": "Across the decoded sync tokens in the analysis of ChatGPT's ad collector, how many carried subject_type anonymous?",
+    "answer_type": "number",
+    "expected_answer": "196",
+    "source_id": "49776729"
+  },
+  {
+    "id": "ext_24_1",
+    "question": "What specific approach optimizes the packaging of components in the e-POWER system?",
+    "answer_type": "text",
+    "expected_answer": "5-in-1",
+    "source_id": "49872883"
+  },
+  {
+    "id": "ext_24_2",
+    "question": "What type of power semiconductors are used in some models of the e-POWER system?",
+    "answer_type": "text",
+    "expected_answer": "silicon carbide",
+    "source_id": "49872883",
+    "accepted_answers": [
+      "SiC"
+    ]
+  },
+  {
+    "id": "ext_29_1",
+    "question": "Which hospital was placed under quarantine after the Irkutsk laboratory worker's death?",
+    "answer_type": "text",
+    "expected_answer": "Shelekhov district hospital",
+    "source_id": "49960084",
+    "accepted_answers": [
+      "Shelekhov hospital",
+      "Shelekhov"
+    ]
+  },
+  {
+    "id": "ext_29_2",
+    "question": "What symptoms led to the hospitalization of the Irkutsk laboratory worker who later died?",
+    "answer_type": "text",
+    "expected_answer": "severe pneumonia",
+    "source_id": "49960084",
+    "accepted_answers": [
+      "pneumonia"
+    ]
+  },
+  {
+    "id": "ext_32_1",
+    "question": "Which version of the Linux kernel is used in WSL3?",
+    "answer_type": "text",
+    "expected_answer": "6.18.40.1",
+    "source_id": "49998801",
+    "accepted_answers": [
+      "6.18.40",
+      "6.18 kernel",
+      "Linux kernel 6.18.40"
+    ]
+  },
+  {
+    "id": "ext_33_1",
+    "question": "What CVE number was assigned to the Telegram Desktop one-click account takeover vulnerability?",
+    "answer_type": "text",
+    "expected_answer": "CVE-2026-107181",
+    "source_id": "50029123"
+  },
+  {
+    "id": "ext_33_2",
+    "question": "What CVSS severity score was assigned to the Telegram Desktop account-takeover vulnerability?",
+    "answer_type": "number",
+    "expected_answer": "8.1",
+    "source_id": "50029123"
+  },
+  {
+    "id": "ext_42_1",
+    "question": "Who joined the board of Typesafe AI alongside the recent funding?",
+    "answer_type": "text",
+    "expected_answer": "Martin Casado",
+    "source_id": "50023450",
+    "accepted_answers": [
+      "Casado Martin",
+      "Martin C.",
+      "Casado"
+    ]
+  },
+  {
+    "id": "ext_51_1",
+    "question": "What surveillance technology did Anthony Sistilli use to track police cars?",
+    "answer_type": "text",
+    "expected_answer": "ALPR camera",
+    "source_id": "50026555",
+    "accepted_answers": [
+      "ALPR",
+      "license plate"
+    ]
+  },
+  {
+    "id": "ext_52_1",
+    "question": "How much was raised in Oxide's previous Series C funding?",
+    "answer_type": "number",
+    "expected_answer": "200",
+    "source_id": "50020014"
+  },
+  {
+    "id": "ext_52_2",
+    "question": "What milestone did Oxide reach in the spring, as described in its Series D announcement?",
+    "answer_type": "text",
+    "expected_answer": "paid income tax",
+    "source_id": "50020014",
+    "accepted_answers": [
+      "income tax"
+    ]
+  },
+  {
+    "id": "ext_59_1",
+    "question": "On what date was the false homicide tip from an Anthropic AI model posted on PhillyUnsolvedMurders.com?",
+    "answer_type": "text",
+    "expected_answer": "July 18, 2026",
+    "source_id": "50027118",
+    "accepted_answers": [
+      "18 July 2026",
+      "July 18"
+    ]
+  },
+  {
+    "id": "ext_59_2",
+    "question": "In the Anthropic false-tip incident on PhillyUnsolvedMurders.com, how long was the delay in detecting and reporting it that was called unacceptable?",
+    "answer_type": "text",
+    "expected_answer": "two months",
+    "source_id": "50027118",
+    "accepted_answers": [
+      "two-month",
+      "2 months",
+      "two month"
+    ]
+  },
+  {
+    "id": "ext_70_1",
+    "question": "How many hectares of forest were felled in Muhos by Tuike Finland Oy?",
+    "answer_type": "number",
+    "expected_answer": "330",
+    "source_id": "50048638"
+  },
+  {
+    "id": "ext_70_2",
+    "question": "How many hectares of land were reportedly logged in Kajaani by Tuike Finland Oy?",
+    "answer_type": "number",
+    "expected_answer": "200",
+    "source_id": "50048638"
+  },
+  {
+    "id": "ext_70_3",
+    "question": "How many hectares of land does Google plan to plant trees across at Muhos?",
+    "answer_type": "number",
+    "expected_answer": "130",
+    "source_id": "50048638"
+  },
+  {
+    "id": "ext_78_1",
+    "question": "What percentage of all functions in the reconstructed first-person shooter were byte exact?",
+    "answer_type": "number",
+    "expected_answer": "83",
+    "source_id": "50039092"
+  },
+  {
+    "id": "ext_78_2",
+    "question": "What is the default compaction threshold, as a percentage of context fill, in the first-person shooter decompilation project?",
+    "answer_type": "number",
+    "expected_answer": "90",
+    "source_id": "50039092"
+  },
+  {
+    "id": "ext_trap_1",
+    "question": "What is Anthropic's most recent reported company valuation?",
+    "expect_supported": false
+  },
+  {
+    "id": "ext_trap_2",
+    "question": "For how much did Cloudflare acquire Deno?",
+    "expect_supported": false
+  },
+  {
+    "id": "ext_trap_3",
+    "question": "How many employees does Cloudflare have?",
+    "expect_supported": false
+  },
+  {
+    "id": "ext_trap_4",
+    "question": "What is Samsung Electronics' current market capitalization?",
+    "expect_supported": false
+  },
+  {
+    "id": "ext_trap_5",
+    "question": "Who is the CEO of Oxide Computer Company?",
+    "expect_supported": false
+  },
+  {
+    "id": "ext_trap_6",
+    "question": "What was the launch price of the Atari Falcon computer?",
+    "expect_supported": false
+  },
+  {
+    "id": "ext_trap_7",
+    "question": "How many GitHub stars does the Doory open-source Canva alternative have?",
+    "expect_supported": false
+  },
+  {
+    "id": "ext_trap_8",
+    "question": "How much does Proton Drive for Linux cost per month?",
+    "expect_supported": false
+  },
+  {
+    "id": "ext_trap_9",
+    "question": "How many Telegram users were affected by the Telegram Desktop file-theft vulnerability?",
+    "expect_supported": false
+  },
+  {
+    "id": "ext_trap_10",
+    "question": "What is the starting price of the car that uses Nissan's third-generation e-POWER powertrain?",
+    "expect_supported": false
+  }
+]

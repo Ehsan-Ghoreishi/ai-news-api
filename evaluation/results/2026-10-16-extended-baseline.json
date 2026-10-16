@@ -1,0 +1,874 @@
+[
+  {
+    "id": "harness_matched_settings_count",
+    "question": "How many matched settings did the empirical study of coding-agent harnesses evaluate across four models?",
+    "answer": "176 matched settings",
+    "supported": true,
+    "cited_source_ids": [
+      "49753878",
+      "50048522",
+      "50048522",
+      "50048522",
+      "50039092"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "harness_predefined_tools_bash",
+    "question": "True or false: according to the study, predefined tools improve performance for models with weaker bash proficiency.",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": false,
+    "answer_ok": false,
+    "end_to_end_ok": false
+  },
+  {
+    "id": "harness_models_count",
+    "question": "How many different models were evaluated in the empirical study of coding-agent harness design?",
+    "answer": "4",
+    "supported": true,
+    "cited_source_ids": [
+      "49753878",
+      "50039092",
+      "50048522",
+      "50048522",
+      "50048522"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "harness_benchmarks",
+    "question": "Which two benchmarks were used to evaluate the models in the coding-agent harness study?",
+    "answer": "SWE-Bench Verified and Terminal-Bench 2.1",
+    "supported": true,
+    "cited_source_ids": [
+      "49753878",
+      "50048522",
+      "50027694",
+      "50048522",
+      "50027694"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "harness_context_strategies_count",
+    "question": "How many context-management strategies were compared in the harness study?",
+    "answer": "5",
+    "supported": true,
+    "cited_source_ids": [
+      "49753878",
+      "50048522",
+      "50048522",
+      "50048522",
+      "50027694"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "conway_conjecture_age",
+    "question": "According to the article, how many years ago did John Conway pose the refinement conjecture that the author eventually got proved?",
+    "answer": "50 years",
+    "supported": true,
+    "cited_source_ids": [
+      "49755024",
+      "49755024",
+      "49755024",
+      "49755024",
+      "49755024"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "conway_cache_read_percentage",
+    "question": "In the author's rough token-usage estimate for the Conway's-conjecture project, what percentage of tokens were cache reads?",
+    "answer": "95%",
+    "supported": true,
+    "cited_source_ids": [
+      "49755024",
+      "49755024",
+      "49755024",
+      "49755024",
+      "50039092"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "conway_ai_models_used",
+    "question": "Which two AI assistants does the author mention using over the course of the month-long project to prove the conjecture?",
+    "answer": "Claude and ChatGPT",
+    "supported": true,
+    "cited_source_ids": [
+      "49755024",
+      "49755024",
+      "50024090",
+      "50019056",
+      "49755024"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "conway_project_duration",
+    "question": "According to the article, roughly how long did the author spend working on this project?",
+    "answer": "3 months",
+    "supported": true,
+    "cited_source_ids": [
+      "50039092",
+      "50039092",
+      "50019056",
+      "50019056",
+      "50039092"
+    ],
+    "retrieval_ok": false,
+    "answer_ok": false,
+    "end_to_end_ok": false
+  },
+  {
+    "id": "office_wine_webview2_size",
+    "question": "How large is the WebView2 runtime download that 'ms365 winetricks webview2' installs into the prefix?",
+    "answer": "680 MB",
+    "supported": true,
+    "cited_source_ids": [
+      "49746401",
+      "49746401",
+      "49746401",
+      "49746401",
+      "49746401"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "office_wine_spp_error_code",
+    "question": "What error code does Office's full SPP (Software Protection Platform) validation fail with under Wine, per the article?",
+    "answer": "0xC004E003",
+    "supported": true,
+    "cited_source_ids": [
+      "49746401",
+      "49746401",
+      "49746401",
+      "49746401",
+      "49746401"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "office_wine_default_runner",
+    "question": "What is the default value of the MS365_RUNNER environment variable in the flake?",
+    "answer": "ge",
+    "supported": true,
+    "cited_source_ids": [
+      "49746401",
+      "49746401",
+      "49746401",
+      "49746401",
+      "49746401"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "office_wine_default_product",
+    "question": "What is the default MS365_PRODUCT (ODT product id) used by the flake if not overridden?",
+    "answer": "O365ProPlusRetail",
+    "supported": true,
+    "cited_source_ids": [
+      "49746401",
+      "49746401",
+      "49746401",
+      "49746401",
+      "49746401"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "korea_fine_revenue_cap",
+    "question": "Under Korea's revised Personal Information Protection Act, up to what percentage of total revenue can companies be fined for serious data breaches?",
+    "answer": "10 percent",
+    "supported": true,
+    "cited_source_ids": [
+      "49759466",
+      "49759466",
+      "49776729",
+      "49776729",
+      "50048638"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "korea_breach_notification_hours",
+    "question": "Within how many hours must companies in Korea notify users of a high risk of data exposure, even if a leak hasn't been confirmed?",
+    "answer": "72 hours",
+    "supported": true,
+    "cited_source_ids": [
+      "49759466",
+      "49759466",
+      "49780820",
+      "50048638",
+      "49780820"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "korea_old_fine_cap",
+    "question": "Before this revision, what was the maximum fine, as a percentage of sales, that Korean companies faced for data breaches?",
+    "answer": "3 percent",
+    "supported": true,
+    "cited_source_ids": [
+      "49759466",
+      "49759466",
+      "50048638",
+      "49778029",
+      "49776729"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "korea_coupang_fine_won",
+    "question": "How much was Coupang fined in June for leaking the personal data of 37.55 million people, according to the article?",
+    "answer": "624.6 billion won",
+    "supported": true,
+    "cited_source_ids": [
+      "49759466",
+      "49759466",
+      "49780820",
+      "49780820",
+      "50048638"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "korea_coupang_affected_people",
+    "question": "According to the article, how many million people's personal data did Coupang leak in the case cited as an example?",
+    "answer": "37.55 million",
+    "supported": true,
+    "cited_source_ids": [
+      "49759466",
+      "49759466",
+      "49780820",
+      "50026555",
+      "49780820"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "korea_investment_reduction_pct",
+    "question": "By what maximum percentage can a fine be reduced if a company had already invested in data protection, per the revised Korean rules?",
+    "answer": "40 percent",
+    "supported": true,
+    "cited_source_ids": [
+      "49759466",
+      "49759466",
+      "50048638",
+      "49778029",
+      "50048490"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "cloudflare_ram_reclaimed",
+    "question": "How much RAM did Cloudflare reclaim globally from the consistent-hashing changes to Pingora Backend Router described in the article?",
+    "answer": "100TB",
+    "supported": true,
+    "cited_source_ids": [
+      "49758580",
+      "49758580",
+      "49758580",
+      "49758580",
+      "49758580"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "cloudflare_point_struct_memory_reduction",
+    "question": "By what percentage did changing the Point struct's byte layout reduce the memory used for consistent hashing, according to the article?",
+    "answer": "25%",
+    "supported": true,
+    "cited_source_ids": [
+      "49758580",
+      "49758580",
+      "49758580",
+      "49758580",
+      "49758580"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "cloudflare_dns_team_ram",
+    "question": "How much memory had Cloudflare's DNS team already reclaimed the month before the Pingora Backend Router RAM savings described in the article?",
+    "answer": "100TB",
+    "supported": true,
+    "cited_source_ids": [
+      "49758580",
+      "49758580",
+      "49758580",
+      "49998801",
+      "49758580"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "cloudflare_hashes_per_server_default",
+    "question": "What is the default number of hash points per server used by NGINX and Pingora's ketama implementation, per the article?",
+    "answer": "160",
+    "supported": true,
+    "cited_source_ids": [
+      "49758580",
+      "49758580",
+      "49758580",
+      "49758580",
+      "49758580"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "cloudflare_hash_reduction_pct",
+    "question": "By what percentage did Cloudflare decide to reduce the number of hashes generated per server, based on their math?",
+    "answer": "25%",
+    "supported": true,
+    "cited_source_ids": [
+      "49758580",
+      "49758580",
+      "49758580",
+      "49758580",
+      "49758580"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": false,
+    "end_to_end_ok": false
+  },
+  {
+    "id": "quicktunnels_command",
+    "question": "What exact command does the article show for launching a Cloudflare Quick Tunnel pointing at a local server on port 8000?",
+    "answer": "cloudflared tunnel --url http://localhost:8000",
+    "supported": true,
+    "cited_source_ids": [
+      "49754785",
+      "50029123",
+      "50029123",
+      "50029123",
+      "50019911"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "quicktunnels_preview_domain",
+    "question": "What domain does Cloudflare use for the preview URL generated by Quick Tunnels?",
+    "answer": "trycloudflare.com",
+    "supported": true,
+    "cited_source_ids": [
+      "49754785",
+      "50048642",
+      "49953495",
+      "49776729",
+      "49776729"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "quicktunnels_protection",
+    "question": "Besides automatic HTTPS, what other kind of protection does Cloudflare's Quick Tunnels provide, according to the article?",
+    "answer": "DDoS protection",
+    "supported": true,
+    "cited_source_ids": [
+      "49754785",
+      "50048312",
+      "50048642",
+      "50048312",
+      "50048312"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "unsupported_tesla_stock",
+    "question": "What was Tesla's closing stock price on the day of its most recent earnings call?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "unsupported_google_quantum_qubits",
+    "question": "How many qubits does Google's latest quantum computing chip have, according to the indexed articles?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "unsupported_openai_valuation",
+    "question": "What is OpenAI's latest reported company valuation, according to the indexed articles?",
+    "answer": "$7.5B",
+    "supported": true,
+    "cited_source_ids": [
+      "50023450",
+      "50019499",
+      "50019499",
+      "50019499",
+      "50020014"
+    ],
+    "retrieval_ok": null,
+    "answer_ok": false,
+    "end_to_end_ok": false
+  },
+  {
+    "id": "ext_18_1",
+    "question": "Across the decoded sync tokens in the analysis of ChatGPT's ad collector, how many carried subject_type anonymous?",
+    "answer": "196",
+    "supported": true,
+    "cited_source_ids": [
+      "49776729",
+      "49776729",
+      "49776729",
+      "49776729",
+      "49755024"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_24_1",
+    "question": "What specific approach optimizes the packaging of components in the e-POWER system?",
+    "answer": "The specific approach that optimizes the packaging of components in the e-POWER system is the \"5-in-1\" modular approach, which integrates five major components: the motor, reducer, inverter, increaser, and generator.",
+    "supported": true,
+    "cited_source_ids": [
+      "49872883",
+      "49980208",
+      "49980208",
+      "49980208",
+      "49872883"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_24_2",
+    "question": "What type of power semiconductors are used in some models of the e-POWER system?",
+    "answer": "silicon carbide (SiC)",
+    "supported": true,
+    "cited_source_ids": [
+      "49872883",
+      "49872883",
+      "49997481",
+      "50028264",
+      "49868830"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_29_1",
+    "question": "Which hospital was placed under quarantine after the Irkutsk laboratory worker's death?",
+    "answer": "Shelekhov district hospital",
+    "supported": true,
+    "cited_source_ids": [
+      "49960084",
+      "50028027",
+      "50028027",
+      "49780820",
+      "49960084"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_29_2",
+    "question": "What symptoms led to the hospitalization of the Irkutsk laboratory worker who later died?",
+    "answer": "severe pneumonia",
+    "supported": true,
+    "cited_source_ids": [
+      "49960084",
+      "49780820",
+      "50028027",
+      "49780820",
+      "50019056"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_32_1",
+    "question": "Which version of the Linux kernel is used in WSL3?",
+    "answer": "6.18.40.1",
+    "supported": true,
+    "cited_source_ids": [
+      "49998801",
+      "49998801",
+      "49998801",
+      "49746401",
+      "49746401"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_33_1",
+    "question": "What CVE number was assigned to the Telegram Desktop one-click account takeover vulnerability?",
+    "answer": "CVE-2026-107181",
+    "supported": true,
+    "cited_source_ids": [
+      "50029123",
+      "50029123",
+      "50029123",
+      "50029123",
+      "50029123"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_33_2",
+    "question": "What CVSS severity score was assigned to the Telegram Desktop account-takeover vulnerability?",
+    "answer": "8.1",
+    "supported": true,
+    "cited_source_ids": [
+      "50029123",
+      "50029123",
+      "50029123",
+      "50029123",
+      "50029123"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_42_1",
+    "question": "Who joined the board of Typesafe AI alongside the recent funding?",
+    "answer": "Martin Casado",
+    "supported": true,
+    "cited_source_ids": [
+      "50023450",
+      "50020014",
+      "50019499",
+      "50019499",
+      "50024090"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_51_1",
+    "question": "What surveillance technology did Anthony Sistilli use to track police cars?",
+    "answer": "automatic license plate recognition (ALPR) cameras",
+    "supported": true,
+    "cited_source_ids": [
+      "50026555",
+      "50026555",
+      "49997481",
+      "50027118",
+      "50027118"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_52_1",
+    "question": "How much was raised in Oxide's previous Series C funding?",
+    "answer": "$200M",
+    "supported": true,
+    "cited_source_ids": [
+      "50020014",
+      "50020014",
+      "50023450",
+      "49780820",
+      "49780820"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_52_2",
+    "question": "What milestone did Oxide reach in the spring, as described in its Series D announcement?",
+    "answer": "Oxide paid income tax.",
+    "supported": true,
+    "cited_source_ids": [
+      "50020014",
+      "50020014",
+      "50023450",
+      "50019499",
+      "49780820"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_59_1",
+    "question": "On what date was the false homicide tip from an Anthropic AI model posted on PhillyUnsolvedMurders.com?",
+    "answer": "July 18, 2026",
+    "supported": true,
+    "cited_source_ids": [
+      "50027118",
+      "50027118",
+      "50019056",
+      "50051172",
+      "50019056"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_59_2",
+    "question": "In the Anthropic false-tip incident on PhillyUnsolvedMurders.com, how long was the delay in detecting and reporting it that was called unacceptable?",
+    "answer": "two months",
+    "supported": true,
+    "cited_source_ids": [
+      "50027118",
+      "50027118",
+      "50026555",
+      "50019056",
+      "49780820"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_70_1",
+    "question": "How many hectares of forest were felled in Muhos by Tuike Finland Oy?",
+    "answer": "330 hectares",
+    "supported": true,
+    "cited_source_ids": [
+      "50048638",
+      "50048638",
+      "49780820",
+      "50019056",
+      "49780820"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_70_2",
+    "question": "How many hectares of land were reportedly logged in Kajaani by Tuike Finland Oy?",
+    "answer": "just under 200 hectares",
+    "supported": true,
+    "cited_source_ids": [
+      "50048638",
+      "50048638",
+      "50019056",
+      "49776729",
+      "50019056"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_70_3",
+    "question": "How many hectares of land does Google plan to plant trees across at Muhos?",
+    "answer": "130 hectares",
+    "supported": true,
+    "cited_source_ids": [
+      "50048638",
+      "50048638",
+      "50019056",
+      "49953495",
+      "49778029"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_78_1",
+    "question": "What percentage of all functions in the reconstructed first-person shooter were byte exact?",
+    "answer": "83%",
+    "supported": true,
+    "cited_source_ids": [
+      "50039092",
+      "50039092",
+      "50039092",
+      "50039092",
+      "49758580"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_78_2",
+    "question": "What is the default compaction threshold, as a percentage of context fill, in the first-person shooter decompilation project?",
+    "answer": "90% context fill",
+    "supported": true,
+    "cited_source_ids": [
+      "50039092",
+      "50039092",
+      "50039092",
+      "50039092",
+      "49998801"
+    ],
+    "retrieval_ok": true,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_trap_1",
+    "question": "What is Anthropic's most recent reported company valuation?",
+    "answer": "$7.5B",
+    "supported": true,
+    "cited_source_ids": [
+      "50023450",
+      "50020014",
+      "50019056",
+      "50020014",
+      "50019499"
+    ],
+    "retrieval_ok": null,
+    "answer_ok": false,
+    "end_to_end_ok": false
+  },
+  {
+    "id": "ext_trap_2",
+    "question": "For how much did Cloudflare acquire Deno?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_trap_3",
+    "question": "How many employees does Cloudflare have?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_trap_4",
+    "question": "What is Samsung Electronics' current market capitalization?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_trap_5",
+    "question": "Who is the CEO of Oxide Computer Company?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_trap_6",
+    "question": "What was the launch price of the Atari Falcon computer?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_trap_7",
+    "question": "How many GitHub stars does the Doory open-source Canva alternative have?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_trap_8",
+    "question": "How much does Proton Drive for Linux cost per month?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_trap_9",
+    "question": "How many Telegram users were affected by the Telegram Desktop file-theft vulnerability?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  },
+  {
+    "id": "ext_trap_10",
+    "question": "What is the starting price of the car that uses Nissan's third-generation e-POWER powertrain?",
+    "answer": "Not enough information",
+    "supported": false,
+    "cited_source_ids": [],
+    "retrieval_ok": null,
+    "answer_ok": true,
+    "end_to_end_ok": true
+  }
+]

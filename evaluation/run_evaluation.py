@@ -40,7 +40,7 @@ def _ask(base_url: str, question: str) -> dict:
     raise AssertionError("unreachable")
 
 
-def evaluate(base_url: str) -> list[dict]:
+def evaluate(base_url: str, questions_paths: tuple[Path, ...] = (QUESTIONS_PATH,)) -> list[dict]:
     """Run every question against the API and return per-question results.
 
     Most questions expect a grounded answer backed by a specific source article.
@@ -48,7 +48,11 @@ def evaluate(base_url: str) -> list[dict]:
     corpus doesn't cover, to check that the API correctly declines to answer
     instead of hallucinating - for those, retrieval_ok doesn't apply.
     """
-    questions = json.loads(QUESTIONS_PATH.read_text())
+    questions = [
+        question
+        for path in questions_paths
+        for question in json.loads(Path(path).read_text(encoding="utf-8"))
+    ]
 
     results = []
     for question in questions:
@@ -73,6 +77,10 @@ def evaluate(base_url: str) -> list[dict]:
         results.append(
             {
                 "id": question["id"],
+                "question": question["question"],
+                "answer": payload["answer"],
+                "supported": payload["supported"],
+                "cited_source_ids": [citation["source_id"] for citation in payload["citations"]],
                 "retrieval_ok": retrieval_ok,
                 "answer_ok": answer_ok,
                 "end_to_end_ok": end_to_end_ok,
@@ -109,9 +117,20 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluate the /ask endpoint against known questions.")
     parser.add_argument("--base-url", default="http://localhost:8001")
     parser.add_argument("--minimum-accuracy", type=float, default=None)
+    parser.add_argument(
+        "--questions",
+        nargs="+",
+        default=[str(QUESTIONS_PATH)],
+        help="One or more question files (default: the original 30-question set).",
+    )
+    parser.add_argument("--output", default=None, help="Write per-question results as JSON.")
     args = parser.parse_args()
 
-    results = evaluate(args.base_url)
+    results = evaluate(args.base_url, tuple(Path(p) for p in args.questions))
+    if args.output:
+        Path(args.output).write_text(
+            json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
     end_to_end_accuracy = report(results)
 
     if args.minimum_accuracy is not None and end_to_end_accuracy < args.minimum_accuracy:
