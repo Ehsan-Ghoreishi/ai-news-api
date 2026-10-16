@@ -129,6 +129,51 @@ against a staging database to score retrieval and answer accuracy — kept
 opt-in because it spends real OpenAI credits per run and needs a database
 that isn't production.
 
+
+## Evaluation
+
+Baseline run on 2026-10-16 against the live API (Cloud Run); the corpus held
+84 articles. Harness commit `d63e54a`. Requests use `limit=5`, `style=concise`,
+`allow_general_knowledge=false` (strict mode); models: `gpt-4o-mini`,
+`text-embedding-3-small`.
+
+| Metric | Result |
+|---|---|
+| Questions | 30 (27 answerable, 3 unanswerable) |
+| End-to-end accuracy | 26/30 (86.7%) |
+| Answerable questions answered correctly | 24/27 (88.9%) |
+| Unanswerable questions correctly declined | 2/3 |
+| Retrieval accuracy (source article among cited) | 25/27 (92.6%) |
+
+Raw output: `week6/evaluations/results/2026-10-16.txt`
+Reproduce: `uv run python -m week6.evaluations.run_evaluation --base-url <API_URL>`
+
+### Failure analysis
+
+1. `harness_predefined_tools_bash` - retrieval miss. The generic phrasing
+   ("True or false: according to the study ...") pulled five chunks from other
+   articles; a keyword-style query ranks the right article first. The API
+   correctly declined to answer.
+2. `conway_project_duration` - retrieval miss on an under-specified question
+   ("this project", "the article"). The answer is in the corpus, but the
+   question never names the topic.
+3. `cloudflare_hash_reduction_pct` - the right article was retrieved, but the
+   chunk containing the answer (90%) ranked 6th and was cut off by `limit=5`.
+   The model answered with another figure from the retrieved text (25%, a
+   memory reduction).
+4. `unsupported_openai_valuation` - the corpus has no OpenAI valuation. The
+   model answered with another company's valuation and returned
+   `supported: true`.
+
+### Limitations of this evaluation
+
+- 30 questions over 6 articles (plus 3 unanswerable): the 95% Wilson interval
+  for 26/30 is roughly 70-95%, so small differences are not significant.
+- "Retrieval accuracy" checks the article, not the chunk holding the answer
+  (see failure 3).
+- The corpus grows with each ingestion run; results are tied to the date above.
+
+
 ## Example requests
 
 Assumes the API is running locally on port 8001 (`uv run uvicorn
