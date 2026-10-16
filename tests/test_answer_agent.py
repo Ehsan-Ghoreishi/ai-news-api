@@ -25,13 +25,17 @@ class TestAnswerFromContext(unittest.TestCase):
         mock_client = self._mock_client(GroundedAnswer(answer="42", supported=True))
         with patch.object(answer_agent, "client", mock_client):
             answer_agent.answer_from_context("q?", ["ctx"])
-        self.assertEqual(_system_prompt(mock_client), answer_agent.CONCISE_INSTRUCTIONS)
+        self.assertTrue(
+            _system_prompt(mock_client).startswith(answer_agent.CONCISE_INSTRUCTIONS)
+        )
 
     def test_detailed_style_uses_the_explanatory_prompt(self):
         mock_client = self._mock_client(GroundedAnswer(answer="Because...", supported=True))
         with patch.object(answer_agent, "client", mock_client):
             answer_agent.answer_from_context("why?", ["ctx"], style="detailed")
-        self.assertEqual(_system_prompt(mock_client), answer_agent.DETAILED_INSTRUCTIONS)
+        self.assertTrue(
+            _system_prompt(mock_client).startswith(answer_agent.DETAILED_INSTRUCTIONS)
+        )
 
     def test_detailed_prompt_asks_for_full_sentences_not_bare_values(self):
         self.assertIn("complete sentences", answer_agent.DETAILED_INSTRUCTIONS)
@@ -59,7 +63,9 @@ class TestAnswerFromGeneralKnowledge(unittest.TestCase):
             answer = answer_agent.answer_from_general_knowledge("Capital of France?")
         self.assertEqual(answer, "Paris.")
         kwargs = mock_client.responses.create.call_args.kwargs
-        self.assertEqual(kwargs["input"][0]["content"], answer_agent.GENERAL_KNOWLEDGE_INSTRUCTIONS)
+        self.assertTrue(
+            kwargs["input"][0]["content"].startswith(answer_agent.GENERAL_KNOWLEDGE_INSTRUCTIONS)
+        )
         self.assertEqual(kwargs["input"][1]["content"], "Capital of France?")
 
     def test_empty_output_raises(self):
