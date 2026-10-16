@@ -1,7 +1,7 @@
 [project]
-name = "ai-news-ap"
+name = "ai-news-api"
 version = "0.1.0"
-description = "Add your description here"
+description = "Retrieval-augmented generation API over scraped AI and tech news, with grounded answers and citations"
 readme = "README.md"
 authors = [
     { name = "ehsanghoreishi", email = "ehsan.ghoreshi62@gmail.com" }
@@ -18,7 +18,6 @@ dependencies = [
     "requests>=2.34.2",
     "slowapi>=0.1.10",
     "sqlalchemy>=2.0.52",
-    "streamlit>=1.64.0",
     "tiktoken>=0.14.0",
     "trafilatura>=2.2.0",
     "uvicorn[standard]>=0.52.4",

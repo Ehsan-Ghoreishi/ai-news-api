@@ -469,15 +469,14 @@ A small Streamlit app (`frontend/streamlit_app.py`) provides a UI over `/ask/` a
 
 ```bash
 # from the repo root, with the FastAPI server already running (see above)
-uv add streamlit
-uv run streamlit run frontend/streamlit_app.py
+uv run --with-requirements frontend/requirements.txt streamlit run frontend/streamlit_app.py
 ```
 
 By default it talks to `http://localhost:8001`; point it elsewhere with the
 `API_BASE_URL` environment variable, e.g.:
 
 ```bash
-API_BASE_URL=https://ai-news-api-640738486923.europe-west1.run.app uv run streamlit run frontend/streamlit_app.py
+API_BASE_URL=https://ai-news-api-640738486923.europe-west1.run.app uv run --with-requirements frontend/requirements.txt streamlit run frontend/streamlit_app.py
 ```
 
 ## Observability
