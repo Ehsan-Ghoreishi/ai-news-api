@@ -217,6 +217,30 @@ failed ask for a company valuation (`unsupported_openai_valuation` and the new
 
 Raw output: `evaluation/results/2026-10-16-extended-baseline.json` and `.txt`.
 
+### Similarity threshold (tested, not adopted)
+
+A minimum top-chunk similarity was tested as a way to refuse unsupported questions.
+For each of the 59 questions in the extended baseline, the best similarity from `/search`
+(limit 5) was compared with the outcome:
+
+| Group | n | Top similarity (min / median / max) |
+|---|---|---|
+| Answerable, answered correctly | 43 | 0.45 / 0.60 / 0.79 |
+| Answerable, failed | 3 | 0.37 / 0.43 / 0.54 |
+| Unanswerable, declined correctly | 11 | 0.35 / 0.58 / 0.66 |
+| Unanswerable, answered anyway | 2 | 0.44 / 0.475 / 0.51 |
+
+| Threshold | Correct answers rejected | Failing unanswerable questions caught |
+|---|---|---|
+| 0.45 | 0 | 1 of 2 |
+| 0.50 | 10 | 1 of 2 |
+| 0.55 | 14 | 2 of 2 |
+
+The groups overlap, so similarity does not separate them. 0.45 costs nothing on this set,
+but it equals the lowest similarity of any correctly answered question (it would be tuned
+to these 59 questions) and catches one of two failures. 0.55 catches both at the price of
+14 of 43 correct answers. No threshold was adopted.
+
 ### Limitations of this evaluation
 
 - 30 questions over 6 articles (plus 3 unanswerable): the 95% Wilson interval
