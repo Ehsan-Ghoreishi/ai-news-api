@@ -380,6 +380,8 @@ curl -X POST http://localhost:8001/ask/ \
 
 ## Frontend
 
+![Streamlit demo](docs/images/streamlit-demo.png)
+
 A small Streamlit app (`streamlit_app.py`) provides a UI over `/ask/` and
 `/search/` for anyone who'd rather not use curl or `/docs`.
 
