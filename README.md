@@ -19,8 +19,7 @@ first, force the model to answer *only* from what was retrieved, and make
 the "I don't know" path a first-class response instead of something the
 model has to be begged into. The `supported` flag on every answer, and the
 fact that citations are only ever returned when `supported` is `true`, is
-the whole design in miniature — the API never lets you mistake an unsourced
-guess for a grounded fact.
+the whole design in miniature — the API is built to make an unsourced guess hard to mistake for a grounded fact.
 
 ## Architecture
 
@@ -307,8 +306,9 @@ search. If the LLM judges the retrieved context insufficient and sets
 `supported=false`, returning those chunks as "citations" anyway would
 misrepresent irrelevant results as sources the answer was built on. So
 `app/api/routes/ask.py` gates citation-building on `grounded.supported`,
-keeping the contract honest: a citation in the response is a promise that
-it was actually used.
+keeping the contract honest: no citations accompany an unsupported answer.
+When `supported` is `true`, `citations` lists the chunks retrieved for the answer,
+which are not guaranteed to all have been used (see Limitations).
 
 **Rate limiting exists because `/ask/` is the one route that spends
 money on every call.** Every request does one embedding call plus one
@@ -352,6 +352,9 @@ curl -X POST http://localhost:8001/ask/ \
 
 ### Limitations
 
+- `citations` lists the chunks retrieved for the answer, not a per-claim attribution.
+  In the evaluation, unrelated chunks appeared next to relevant ones, and the API
+  returned `supported: true` with a wrong answer (see Evaluation, failures 2 to 4).
 - The knowledge base is whatever the scheduled ingestion job has scraped (`SCRAPE_LIMIT`, default 30 Hacker News stories per run; pages with under 500 characters of extractable text are skipped). Questions outside that corpus are answered from general knowledge and labelled as such; the model has no live data, so recent events may be wrong or missing.
 - `supported` means "backed by retrieved articles", not "the answer is correct".
 - The evaluation (`evaluation`) always uses `style="concise"` and `allow_general_knowledge=false`, so it measures strict article-grounded accuracy and correct refusals, not the quality of long-form answers.
@@ -367,11 +370,11 @@ uv add streamlit
 uv run streamlit run streamlit_app.py
 ```
 
-By default it talks to `http://localhost:8000`; point it elsewhere with the
+By default it talks to `http://localhost:8001`; point it elsewhere with the
 `API_BASE_URL` environment variable, e.g.:
 
 ```bash
-API_BASE_URL=http://localhost:8001 uv run streamlit run streamlit_app.py
+API_BASE_URL=https://ai-news-api-640738486923.europe-west1.run.app uv run streamlit run streamlit_app.py
 ```
 
 ## Observability

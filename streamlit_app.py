@@ -11,7 +11,7 @@ from typing import Any
 import requests
 import streamlit as st
 
-API_BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:8000").rstrip("/")
+API_BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:8001").rstrip("/")
 REQUEST_TIMEOUT_SECONDS = 30
 
 st.set_page_config(page_title="AI News API", page_icon="📰")

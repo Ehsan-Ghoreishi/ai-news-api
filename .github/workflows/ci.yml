@@ -28,7 +28,7 @@ jobs:
       # tests/test_api_routes.py before app.main is imported, and every
       # LLM/DB call is mocked. So this step needs no secrets at all.
       - name: Run unit tests
-        run: uv run python -m unittest discover
+        run: uv run pytest
 
       # evaluation/run_evaluation.py is a different kind of check: it
       # boots the real FastAPI app against a real Postgres+pgvector database
