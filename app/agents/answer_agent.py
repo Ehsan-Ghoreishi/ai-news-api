@@ -77,6 +77,18 @@ GENERAL_KNOWLEDGE_INSTRUCTIONS = (
 )
 
 
+EVIDENCE_RULES = (
+    "The context items are numbered [1], [2], ... "
+    "Set used_context_indices to the numbers of the items your answer relies on. "
+    "Set evidence to ONE sentence (or table row) copied exactly, character for character, "
+    "from one of those items, that directly states the answer. "
+    "The answer must be about the same company, product, person or study that the question "
+    "names. If the context only covers a different one (for example the question asks about "
+    "company A but the context describes company B), set supported to false. "
+    "If supported is false, leave evidence empty and used_context_indices empty."
+)
+
+
 @_observe_if_configured
 def answer_from_context(
     question: str,
@@ -98,6 +110,8 @@ def answer_from_context(
                 "role": "system",
                 "content": (
                     (DETAILED_INSTRUCTIONS if style == "detailed" else CONCISE_INSTRUCTIONS)
+                    + " "
+                    + EVIDENCE_RULES
                     + " "
                     + _today_context()
                 ),

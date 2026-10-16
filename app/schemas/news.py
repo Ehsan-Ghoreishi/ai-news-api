@@ -106,6 +106,17 @@ class AskRequest(BaseModel):
 class GroundedAnswer(BaseModel):
     answer: str = Field(description="LLM-generated answer text.")
     supported: bool = Field(description="Whether the answer is actually backed by the retrieved chunks.")
+    evidence: str = Field(
+        default_factory=str,
+        description=(
+            "ONE sentence copied exactly (character for character) from one of the numbered "
+            "context items, stating the answer. Empty when supported is false."
+        ),
+    )
+    used_context_indices: list[int] = Field(
+        default_factory=list,
+        description="Numbers of the context items the answer relies on. Empty when unsupported.",
+    )
 
 
 class AnswerCitation(BaseModel):

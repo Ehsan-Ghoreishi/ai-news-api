@@ -17,6 +17,7 @@ from app.schemas.news import (
     RelatedArticle,
     SearchResult,
 )
+from app.services.grounding import verified_citation_indices
 
 logger = logging.getLogger(__name__)
 
@@ -106,12 +107,24 @@ def ask_news(
     if not grounded.supported:
         return _unsupported_response(ask_request, results)
 
-    # Citations are only built for article-grounded answers (unsupported ones returned above):
-    # citing chunks the model judged irrelevant would misrepresent them as sources.
+    # Do not trust `supported` on its own: the model must also quote the sentence that answers
+    # the question, and that sentence must exist verbatim in a retrieved chunk. Otherwise the
+    # answer is treated as unsupported (this is what blocks an answer about company A being
+    # given for a question about company B).
+    cited_indices = verified_citation_indices(
+        grounded.evidence, grounded.used_context_indices, [r.chunk_content for r in results]
+    )
+    if cited_indices is None:
+        logger.info("Rejecting answer: its evidence sentence is not in the retrieved chunks")
+        return _unsupported_response(ask_request, results)
+    cited_results = [results[i] for i in cited_indices]
+
+    # Citations are only built for article-grounded answers (unsupported ones returned above),
+    # and only for chunks that contain the verified evidence or that the model said it used.
     # SearchResult has no source_id, so we look each news item up to build the citation.
     # The lookup can miss (e.g. item deleted after indexing) - skip those rather than crash.
     citations = []
-    for result in results:
+    for result in cited_results:
         news_item = get_news_item(db, result.news_item_id)
         if news_item is None:
             logger.warning("Skipping citation for missing news_item_id=%s", result.news_item_id)

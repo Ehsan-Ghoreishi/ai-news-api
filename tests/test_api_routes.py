@@ -89,7 +89,9 @@ class TestAskRoute(unittest.TestCase):
                 similarity=0.9,
             )
         ]
-        mock_answer.return_value = GroundedAnswer(answer="42", supported=True)
+        mock_answer.return_value = GroundedAnswer(
+            answer="42", supported=True, evidence="the answer is 42", used_context_indices=[1]
+        )
         mock_get_item.return_value = _news_item()
 
         response = client.post("/ask/", json={"question": "What is the answer?", "limit": 5})
@@ -246,7 +248,12 @@ class TestAskRoute(unittest.TestCase):
                 similarity=0.9,
             )
         ]
-        mock_answer.return_value = GroundedAnswer(answer="It is 42, per the article.", supported=True)
+        mock_answer.return_value = GroundedAnswer(
+            answer="It is 42, per the article.",
+            supported=True,
+            evidence="the answer is 42",
+            used_context_indices=[1],
+        )
         mock_get_item.return_value = _news_item()
 
         client.post("/ask/", json={"question": "What is the answer?"})  # detailed is the default
@@ -271,7 +278,9 @@ class TestAskRoute(unittest.TestCase):
                 similarity=0.9,
             )
         ]
-        mock_answer.return_value = GroundedAnswer(answer="42", supported=True)
+        mock_answer.return_value = GroundedAnswer(
+            answer="42", supported=True, evidence="the answer is 42", used_context_indices=[1]
+        )
         mock_get_item.return_value = _news_item()
 
         client.post("/ask/", json={"question": "What is the answer?", "style": "concise"})
@@ -279,6 +288,76 @@ class TestAskRoute(unittest.TestCase):
         args, kwargs = mock_answer.call_args
         self.assertEqual(kwargs["style"], "concise")
         self.assertEqual(args[1], ["the answer is 42"])
+
+    @patch("app.api.routes.ask.get_news_item")
+    @patch("app.api.routes.ask.answer_from_context")
+    @patch("app.api.routes.ask.search_similar_chunks")
+    @patch("app.api.routes.ask.create_embedding")
+    def test_ask_rejects_answer_whose_evidence_is_not_in_the_chunks(
+        self, mock_embed, mock_search, mock_answer, mock_get_item
+    ):
+        mock_embed.return_value = [0.1] * 1536
+        mock_search.return_value = [
+            SearchResult(
+                news_item_id=1,
+                title="Test Article",
+                url="https://example.com/article",
+                chunk_content="the answer is 42",
+                similarity=0.9,
+            )
+        ]
+        mock_answer.return_value = GroundedAnswer(
+            answer="7.5 billion",
+            supported=True,
+            evidence="Another company raised money at a 7.5 billion valuation",
+            used_context_indices=[1],
+        )
+        mock_get_item.return_value = _news_item()
+
+        response = client.post(
+            "/ask/", json={"question": "What is the answer?", "allow_general_knowledge": False}
+        )
+
+        body = response.json()
+        self.assertFalse(body["supported"])
+        self.assertEqual(body["citations"], [])
+        self.assertEqual(body["answer"], "Not enough information")
+        self.assertEqual(body["answer_source"], "none")
+
+    @patch("app.api.routes.ask.get_news_item")
+    @patch("app.api.routes.ask.answer_from_context")
+    @patch("app.api.routes.ask.search_similar_chunks")
+    @patch("app.api.routes.ask.create_embedding")
+    def test_ask_cites_only_chunks_that_hold_the_evidence(
+        self, mock_embed, mock_search, mock_answer, mock_get_item
+    ):
+        mock_embed.return_value = [0.1] * 1536
+        mock_search.return_value = [
+            SearchResult(
+                news_item_id=1,
+                title="Test Article",
+                url="https://example.com/article",
+                chunk_content="unrelated text about wine",
+                similarity=0.9,
+            ),
+            SearchResult(
+                news_item_id=2,
+                title="Other Article",
+                url="https://example.com/other",
+                chunk_content="the answer is 42",
+                similarity=0.8,
+            ),
+        ]
+        mock_answer.return_value = GroundedAnswer(
+            answer="42", supported=True, evidence="the answer is 42", used_context_indices=[2]
+        )
+        mock_get_item.return_value = _news_item()
+
+        response = client.post("/ask/", json={"question": "What is the answer?", "limit": 5})
+
+        body = response.json()
+        self.assertTrue(body["supported"])
+        self.assertEqual([c["chunk_content"] for c in body["citations"]], ["the answer is 42"])
 
     def test_ask_invalid_style_is_rejected(self):
         response = client.post("/ask/", json={"question": "x", "style": "essay"})
